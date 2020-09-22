@@ -19,6 +19,7 @@ namespace Woop.ViewModels
 
         private readonly ScriptManager _scriptManager;
         private readonly CoreDispatcher _dispatcher;
+        private readonly SettingsService _settingsService;
         private string _buffer;
         private Selection _selection;
         private string _query;
@@ -28,10 +29,11 @@ namespace Woop.ViewModels
         private ScriptViewModel _selectedScript;
         private ScriptViewModel _lastRunScript;
 
-        public MainViewModel(CoreDispatcher dispatcher)
+        public MainViewModel(CoreDispatcher dispatcher, SettingsService settingsService)
         {
             _dispatcher = dispatcher;
-            _scriptManager = new ScriptManager();
+            _settingsService = settingsService;
+            _scriptManager = new ScriptManager(settingsService);
 
             RunSelectedScriptCommand = new RelayCommand(RunSelectedScript);
             ReRunLastScriptCommand = new RelayCommand(ReRunLastScript, () => _lastRunScript != null);

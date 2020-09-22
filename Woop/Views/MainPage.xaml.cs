@@ -9,12 +9,16 @@ using Windows.System;
 using System.Numerics;
 using Woop.ViewModels;
 using Woop.Models;
+using Woop.Services;
+using Windows.UI;
+using Windows.UI.Xaml.Media;
 
 namespace Woop.Views
 {
     public sealed partial class MainPage : Page
     {
         private CoreApplicationViewTitleBar _coreTitleBar = CoreApplication.GetCurrentView().TitleBar;
+        private readonly SettingsService _settingsService;
 
         public double CoreTitleBarHeight => _coreTitleBar.Height;
 
@@ -37,7 +41,11 @@ namespace Woop.Views
 
         public MainPage()
         {
-            ViewModel = new MainViewModel(Dispatcher);
+            _settingsService = new SettingsService();
+            _settingsService.ApplicationThemeChanged += OnApplicationThemeChanged;
+            ViewModel = new MainViewModel(Dispatcher, _settingsService);
+
+            RequestedTheme = _settingsService.ApplicationTheme;
 
             InitializeComponent();
 
@@ -51,12 +59,33 @@ namespace Woop.Views
             var coreTitleBar = CoreApplication.GetCurrentView().TitleBar;
             coreTitleBar.ExtendViewIntoTitleBar = true;
 
+            SetTitleBarColors();
+        }
+
+        private void SetTitleBarColors()
+        {
+            // todo resources color are not correct when theme changes. hardcode values for each theme?
+
             var titleBar = ApplicationView.GetForCurrentView().TitleBar;
 
-            titleBar.BackgroundColor = Windows.UI.Colors.Transparent;
-            titleBar.ButtonBackgroundColor = Windows.UI.Colors.Transparent;
-            titleBar.InactiveBackgroundColor = Windows.UI.Colors.Transparent;
-            titleBar.ButtonInactiveBackgroundColor = Windows.UI.Colors.Transparent;
+            titleBar.ButtonBackgroundColor = Colors.Transparent;
+            titleBar.ButtonInactiveBackgroundColor = Colors.Transparent;
+
+            titleBar.ButtonHoverBackgroundColor = (App.Current.Resources["TitleBarButtonPointerOverBackground"] as SolidColorBrush).Color;
+            titleBar.ButtonPressedBackgroundColor = (App.Current.Resources["TitleBarButtonPressedBackground"] as SolidColorBrush).Color;
+
+            titleBar.ButtonForegroundColor = (Color)Resources["SystemBaseHighColor"];
+            titleBar.ButtonHoverForegroundColor = (Color)Resources["SystemBaseHighColor"];
+            titleBar.ButtonPressedForegroundColor = (Color)Resources["SystemBaseHighColor"];
+        }
+
+        private async void OnApplicationThemeChanged(object sender, ElementTheme e)
+        {
+            await Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
+            {
+                RequestedTheme = e;
+                SetTitleBarColors();
+            });
         }
 
         private async void Page_Loaded(object sender, RoutedEventArgs e)
@@ -95,6 +124,7 @@ namespace Woop.Views
         private void Page_Unloaded(object sender, RoutedEventArgs e)
         {
             Window.Current.SetTitleBar(null);
+            _settingsService.ApplicationThemeChanged -= OnApplicationThemeChanged;
             ViewModel = null;
             _coreTitleBar = null;
         }
@@ -114,6 +144,12 @@ namespace Woop.Views
             {
                 ViewModel.Selection = null;
             }
+        }
+
+        private async void OnSettingsTapped(object sender, RoutedEventArgs e)
+        {
+            var settings = new SettingsDialog(_settingsService);
+            await settings.ShowAsync();
         }
     }
 }

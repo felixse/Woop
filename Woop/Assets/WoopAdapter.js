@@ -10,5 +10,6 @@
     };
     main(input);
 
+    // todo this breaks if a script is using fullText or selection instead of text
     return input.text;
 }

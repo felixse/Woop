@@ -4,6 +4,7 @@ using Windows.ApplicationModel.Activation;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
+using Woop.Services;
 using Woop.Views;
 
 namespace Woop
@@ -13,6 +14,8 @@ namespace Woop
     /// </summary>
     sealed partial class App : Application
     {
+        private readonly SettingsService _settingsService;
+
         /// <summary>
         /// Initializes the singleton application object.  This is the first line of authored code
         /// executed, and as such is the logical equivalent of main() or WinMain().
@@ -21,6 +24,13 @@ namespace Woop
         {
             this.InitializeComponent();
             this.Suspending += OnSuspending;
+
+            _settingsService = new SettingsService();
+
+            if (_settingsService.ApplicationTheme != ElementTheme.Default)
+            {
+                App.Current.RequestedTheme = _settingsService.ApplicationTheme == ElementTheme.Light ? ApplicationTheme.Light : ApplicationTheme.Dark;
+            }
         }
 
         /// <summary>

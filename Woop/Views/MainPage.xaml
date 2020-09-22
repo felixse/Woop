@@ -16,94 +16,21 @@
     Unloaded="Page_Unloaded"
     mc:Ignorable="d">
     <Page.Resources>
-        <ResourceDictionary>
-            <ResourceDictionary.ThemeDictionaries>
-                <ResourceDictionary x:Key="Light">
-                    <SolidColorBrush x:Key="TitleBarButtonPointerOverBackground" Color="{StaticResource SystemChromeMediumColor}" />
-                    <SolidColorBrush x:Key="TitleBarButtonPressedBackground" Color="{StaticResource SystemChromeHighColor}" />
-                </ResourceDictionary>
-                <ResourceDictionary x:Key="Dark">
-                    <SolidColorBrush x:Key="TitleBarButtonPointerOverBackground" Color="#191919" />
-                    <SolidColorBrush x:Key="TitleBarButtonPressedBackground" Color="{StaticResource SystemChromeDisabledHighColor}" />
-                </ResourceDictionary>
-            </ResourceDictionary.ThemeDictionaries>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary>
-                    <converters:IconNameToIconConverter x:Key="IconNameToIconConverter" />
-                    <converters:StatusTypeToColorConverter x:Key="StatusTypeToColorConverter" />
-                    <converters:StatusTypeToElementThemeConverter x:Key="StatusTypeToElementThemeConverter" />
-                    <Style x:Key="TitleBarButtonStyle" TargetType="Button">
-                        <Setter Property="Background" Value="Transparent" />
-                        <Setter Property="BorderThickness" Value="0" />
-                        <Setter Property="HorizontalAlignment" Value="Left" />
-                        <Setter Property="VerticalAlignment" Value="Center" />
-                        <Setter Property="FontFamily" Value="{ThemeResource ContentControlThemeFontFamily}" />
-                        <Setter Property="FontWeight" Value="Normal" />
-                        <Setter Property="FontSize" Value="{ThemeResource ControlContentThemeFontSize}" />
-                        <Setter Property="UseSystemFocusVisuals" Value="True" />
-                        <Setter Property="Width" Value="47" />
-                        <Setter Property="Height" Value="32" />
-                        <Setter Property="Template">
-                            <Setter.Value>
-                                <ControlTemplate TargetType="Button">
-                                    <Grid x:Name="RootGrid" Background="{TemplateBinding Background}">
-                                        <ContentPresenter
-                                            x:Name="ContentPresenter"
-                                            Padding="{TemplateBinding Padding}"
-                                            HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                            VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
-                                            AutomationProperties.AccessibilityView="Raw"
-                                            BorderBrush="{TemplateBinding BorderBrush}"
-                                            BorderThickness="{TemplateBinding BorderThickness}"
-                                            Content="{TemplateBinding Content}"
-                                            ContentTemplate="{TemplateBinding ContentTemplate}"
-                                            ContentTransitions="{TemplateBinding ContentTransitions}" />
-                                        <VisualStateManager.VisualStateGroups>
-                                            <VisualStateGroup x:Name="CommonStates">
-                                                <VisualState x:Name="Normal">
-                                                    <Storyboard>
-                                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="RootGrid" Storyboard.TargetProperty="Background">
-                                                            <DiscreteObjectKeyFrame KeyTime="0" Value="Transparent" />
-                                                        </ObjectAnimationUsingKeyFrames>
-                                                    </Storyboard>
-                                                </VisualState>
-                                                <VisualState x:Name="PointerOver">
-                                                    <Storyboard>
-                                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="RootGrid" Storyboard.TargetProperty="Background">
-                                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource TitleBarButtonPointerOverBackground}" />
-                                                        </ObjectAnimationUsingKeyFrames>
-                                                    </Storyboard>
-                                                </VisualState>
-                                                <VisualState x:Name="Pressed">
-                                                    <Storyboard>
-                                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="RootGrid" Storyboard.TargetProperty="Background">
-                                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource TitleBarButtonPressedBackground}" />
-                                                        </ObjectAnimationUsingKeyFrames>
-                                                    </Storyboard>
-                                                </VisualState>
-                                            </VisualStateGroup>
-                                        </VisualStateManager.VisualStateGroups>
-                                    </Grid>
-                                </ControlTemplate>
-                            </Setter.Value>
-                        </Setter>
-                    </Style>
-                    <toolkitConverters:BoolToObjectConverter x:Key="SelectedToColoverConverter">
-                        <toolkitConverters:BoolToObjectConverter.TrueValue>
-                            <SolidColorBrush Color="{ThemeResource SystemAccentColor}" />
-                        </toolkitConverters:BoolToObjectConverter.TrueValue>
-                        <toolkitConverters:BoolToObjectConverter.FalseValue>
-                            <SolidColorBrush Color="Transparent" />
-                        </toolkitConverters:BoolToObjectConverter.FalseValue>
-                    </toolkitConverters:BoolToObjectConverter>
-                    <toolkitConverters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
-                    <toolkitConverters:BoolNegationConverter x:Key="BoolNegationConverter" />
-                    <SolidColorBrush x:Key="TextControlBorderBrushFocused" Color="Transparent" />
-
-                    <Thickness x:Key="TextControlBorderThemeThicknessFocused">0,0,0,0</Thickness>
-                </ResourceDictionary>
-            </ResourceDictionary.MergedDictionaries>
-        </ResourceDictionary>
+        <converters:IconNameToIconConverter x:Key="IconNameToIconConverter" />
+        <converters:StatusTypeToColorConverter x:Key="StatusTypeToColorConverter" />
+        <converters:StatusTypeToElementThemeConverter x:Key="StatusTypeToElementThemeConverter" />
+        <toolkitConverters:BoolToObjectConverter x:Key="SelectedToColoverConverter">
+            <toolkitConverters:BoolToObjectConverter.TrueValue>
+                <SolidColorBrush Color="{ThemeResource SystemAccentColor}" />
+            </toolkitConverters:BoolToObjectConverter.TrueValue>
+            <toolkitConverters:BoolToObjectConverter.FalseValue>
+                <SolidColorBrush Color="Transparent" />
+            </toolkitConverters:BoolToObjectConverter.FalseValue>
+        </toolkitConverters:BoolToObjectConverter>
+        <toolkitConverters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
+        <toolkitConverters:BoolNegationConverter x:Key="BoolNegationConverter" />
+        <SolidColorBrush x:Key="TextControlBorderBrushFocused" Color="Transparent" />
+        <Thickness x:Key="TextControlBorderThemeThicknessFocused">0,0,0,0</Thickness>
     </Page.Resources>
     <Grid>
         <Grid.RowDefinitions>
@@ -151,7 +78,7 @@
                         <MenuFlyoutItem IsEnabled="False" Text="Reload Scripts" />
                         <MenuFlyoutItem IsEnabled="False" Text="Get more scripts..." />
                         <MenuFlyoutSeparator />
-                        <MenuFlyoutItem Text="Settings">
+                        <MenuFlyoutItem Click="OnSettingsTapped" Text="Settings">
                             <MenuFlyoutItem.Icon>
                                 <SymbolIcon Symbol="Setting" />
                             </MenuFlyoutItem.Icon>

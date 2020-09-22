@@ -13,13 +13,13 @@ namespace Woop.Models
 
         public ChakraContext Context { get; }
 
-        public Script(ChakraContext context, string scriptContent)
+        public Script(ChakraContext context, string scriptContent, bool builtIn)
         {
             var metaStart = scriptContent.IndexOf("/**");
             var metaEnd = scriptContent.IndexOf("**/");
             var metaContent = scriptContent.Substring(metaStart + 3, metaEnd - metaStart - 3);
             Metadata  = JsonSerializer.Deserialize<ScriptMetadata>(metaContent, new JsonSerializerOptions { AllowTrailingCommas = true, PropertyNameCaseInsensitive = true });
-            IsBuiltIn = true;
+            IsBuiltIn = builtIn;
             Context = context;
         }
 
