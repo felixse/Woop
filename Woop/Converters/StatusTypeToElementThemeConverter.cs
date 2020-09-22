@@ -1,12 +1,11 @@
 ﻿using System;
-using Windows.UI;
+using Windows.UI.Xaml;
 using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Media;
 using Woop.ViewModels;
 
 namespace Woop.Converters
 {
-    public class StatusTypeToColorConverter : IValueConverter
+    public class StatusTypeToElementThemeConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, string language)
         {
@@ -15,11 +14,10 @@ namespace Woop.Converters
                 switch (type)
                 {
                     case StatusViewModel.StatusType.Normal:
-                        return new SolidColorBrush(Colors.Transparent);
+                        return ElementTheme.Default;
                     case StatusViewModel.StatusType.Info:
-                        return new SolidColorBrush(Microsoft.Toolkit.Uwp.Helpers.ColorHelper.ToColor("#0063B1"));
                     case StatusViewModel.StatusType.Error:
-                        return new SolidColorBrush(Microsoft.Toolkit.Uwp.Helpers.ColorHelper.ToColor("#E74856"));
+                        return ElementTheme.Dark;
                 }
             }
 

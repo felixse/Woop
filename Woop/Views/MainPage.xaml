@@ -5,10 +5,10 @@
     xmlns:Core="using:Microsoft.Xaml.Interactions.Core"
     xmlns:Interactivity="using:Microsoft.Xaml.Interactivity"
     xmlns:actions="using:Woop.Actions"
-    xmlns:converters="using:Microsoft.Toolkit.Uwp.UI.Converters"
-    xmlns:converters1="using:Woop.Converters"
+    xmlns:converters="using:Woop.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:toolkitConverters="using:Microsoft.Toolkit.Uwp.UI.Converters"
     xmlns:viewModels="using:Woop.ViewModels"
     Padding="0"
     Background="{ThemeResource SystemControlAcrylicWindowBrush}"
@@ -29,8 +29,9 @@
             </ResourceDictionary.ThemeDictionaries>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary>
-                    <converters1:IconNameToIconConverter x:Key="IconNameToIconConverter" />
-                    <converters1:StatusTypeToColorConverter x:Key="StatusTypeToColorConverter" />
+                    <converters:IconNameToIconConverter x:Key="IconNameToIconConverter" />
+                    <converters:StatusTypeToColorConverter x:Key="StatusTypeToColorConverter" />
+                    <converters:StatusTypeToElementThemeConverter x:Key="StatusTypeToElementThemeConverter" />
                     <Style x:Key="TitleBarButtonStyle" TargetType="Button">
                         <Setter Property="Background" Value="Transparent" />
                         <Setter Property="BorderThickness" Value="0" />
@@ -87,15 +88,16 @@
                             </Setter.Value>
                         </Setter>
                     </Style>
-                    <converters:BoolToObjectConverter x:Key="SelectedToColoverConverter">
-                        <converters:BoolToObjectConverter.TrueValue>
+                    <toolkitConverters:BoolToObjectConverter x:Key="SelectedToColoverConverter">
+                        <toolkitConverters:BoolToObjectConverter.TrueValue>
                             <SolidColorBrush Color="{ThemeResource SystemAccentColor}" />
-                        </converters:BoolToObjectConverter.TrueValue>
-                        <converters:BoolToObjectConverter.FalseValue>
+                        </toolkitConverters:BoolToObjectConverter.TrueValue>
+                        <toolkitConverters:BoolToObjectConverter.FalseValue>
                             <SolidColorBrush Color="Transparent" />
-                        </converters:BoolToObjectConverter.FalseValue>
-                    </converters:BoolToObjectConverter>
-                    <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
+                        </toolkitConverters:BoolToObjectConverter.FalseValue>
+                    </toolkitConverters:BoolToObjectConverter>
+                    <toolkitConverters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
+                    <toolkitConverters:BoolNegationConverter x:Key="BoolNegationConverter" />
                     <SolidColorBrush x:Key="TextControlBorderBrushFocused" Color="Transparent" />
 
                     <Thickness x:Key="TextControlBorderThemeThicknessFocused">0,0,0,0</Thickness>
@@ -116,7 +118,10 @@
                 VerticalAlignment="Center"
                 Background="{x:Bind ViewModel.Status.Type, Mode=OneWay, Converter={StaticResource StatusTypeToColorConverter}}"
                 CornerRadius="5">
-                <TextBlock HorizontalAlignment="Center" Text="{x:Bind ViewModel.Status.Text, Mode=OneWay}" />
+                <TextBlock
+                    HorizontalAlignment="Center"
+                    RequestedTheme="{x:Bind ViewModel.Status.Type, Mode=OneWay, Converter={StaticResource StatusTypeToElementThemeConverter}}"
+                    Text="{x:Bind ViewModel.Status.Text, Mode=OneWay}" />
             </Border>
 
         </Grid>
@@ -125,7 +130,10 @@
                 <ColumnDefinition Width="auto" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
-            <Button VerticalAlignment="Top" Style="{StaticResource TitleBarButtonStyle}">
+            <Button
+                VerticalAlignment="Top"
+                IsTabStop="False"
+                Style="{StaticResource TitleBarButtonStyle}">
                 <Button.Flyout>
                     <MenuFlyout Placement="BottomEdgeAlignedLeft">
                         <MenuFlyoutItem Text="Clear" />

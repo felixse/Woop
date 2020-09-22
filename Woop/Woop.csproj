@@ -122,6 +122,7 @@
     </Compile>
     <Compile Include="Converters\IconNameToIconConverter.cs" />
     <Compile Include="Converters\StatusTypeToColorConverter.cs" />
+    <Compile Include="Converters\StatusTypeToElementThemeConverter.cs" />
     <Compile Include="ViewModels\StatusViewModel.cs" />
     <Compile Include="Views\MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>

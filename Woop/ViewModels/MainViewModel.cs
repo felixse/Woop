@@ -115,14 +115,10 @@ namespace Woop.ViewModels
         public bool PickerOpened
         {
             get => _pickerOpened;
-            set
+            private set
             {
                 if (SetProperty(ref _pickerOpened, value))
                 {
-                    if (PickerOpened)
-                    {
-                        Status.Set(SelectYourAction, StatusViewModel.StatusType.Normal);
-                    }
                     Query = null;
                 }
             }
@@ -130,13 +126,17 @@ namespace Woop.ViewModels
 
         public void OpenPicker()
         {
+            Query = null;
             PickerOpened = true;
+            Status.Set(SelectYourAction, StatusViewModel.StatusType.Normal);
         }
 
         public void RunSelectedScript()
         {
             _lastRunScript = SelectedScript;
-            var text = SelectedScript.Script.Run(Selection?.Content, Buffer, ShowInfo, ShowError, _ => { });
+            ClosePicker();
+            var text = _lastRunScript.Script.Run(Selection?.Content, Buffer, ShowInfo, ShowError, _ => { });
+            
             UpdateBuffer(text);
         }
 
@@ -180,6 +180,12 @@ namespace Woop.ViewModels
             {
                 Status.Set(info, StatusViewModel.StatusType.Info, TimeSpan.FromSeconds(10), GetStarted, StatusViewModel.StatusType.Normal);
             });
+        }
+
+        public void ClosePicker()
+        {
+            PickerOpened = false;
+            Status.Set(GetStarted, StatusViewModel.StatusType.Normal);
         }
 
         private void UpdateBuffer(string text)

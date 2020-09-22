@@ -69,13 +69,12 @@ namespace Woop.Views
         {
             if (e.Key == VirtualKey.Escape)
             {
-                ViewModel.PickerOpened = false;
+                ViewModel.ClosePicker();
                 Buffer.Focus(FocusState.Programmatic);
             } 
             else if (e.Key == VirtualKey.Enter)
             {
                 ViewModel.RunSelectedScript();
-                ViewModel.PickerOpened = false;
                 Buffer.Focus(FocusState.Programmatic);
             }
             else if (e.Key == VirtualKey.Up)
