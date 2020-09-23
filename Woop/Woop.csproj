@@ -211,6 +211,7 @@
     <Content Include="Assets\light\unknown.png" />
     <Content Include="Assets\light\watch.png" />
     <Content Include="Assets\light\website.png" />
+    <Content Include="Assets\Scripts\HTMLEncodeAll.js" />
     <Content Include="Assets\WoopAdapter.js" />
     <Content Include="Assets\Scripts\AddSlashes.js" />
     <Content Include="Assets\Scripts\AndroidIOSStrings.js" />
