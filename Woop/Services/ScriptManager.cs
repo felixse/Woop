@@ -85,11 +85,7 @@ namespace Woop.Services
         private async Task<Script> InitializeScript(StorageFile file, string adapterScript, string requireScript, bool builtIn)
         {
             var content = await ReadScriptContentAsync(file);
-            var context = _runtime.CreateContext(true);
-            RequireLoader.EnableRequire(context, requireScript);
-            var result = context.RunScript(content);
-            result = context.RunScript(adapterScript);
-            return new Script(context, content, builtIn);
+            return new Script(_runtime, content, adapterScript, requireScript, builtIn);
         }
 
         private async Task<string> ReadScriptContentAsync(StorageFile file)
