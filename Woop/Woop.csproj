@@ -124,6 +124,7 @@
     <Compile Include="Converters\IconNameToIconConverter.cs" />
     <Compile Include="Converters\StatusTypeToColorConverter.cs" />
     <Compile Include="Converters\StatusTypeToElementThemeConverter.cs" />
+    <Compile Include="Services\RequireLoader.cs" />
     <Compile Include="Services\SettingsService.cs" />
     <Compile Include="ViewModels\SettingsViewModel.cs" />
     <Compile Include="ViewModels\StatusViewModel.cs" />
@@ -217,10 +218,13 @@
     <Content Include="Assets\light\unknown.png" />
     <Content Include="Assets\light\watch.png" />
     <Content Include="Assets\light\website.png" />
+    <Content Include="Assets\Require.js" />
     <Content Include="Assets\Scripts\HTMLEncodeAll.js" />
+    <Content Include="Assets\Scripts\JSONtoYAML.js" />
     <Content Include="Assets\Scripts\lib\js-yaml.js" />
     <Content Include="Assets\Scripts\ReplaceSmartQuotes.js" />
     <Content Include="Assets\Scripts\SpongeCase.js" />
+    <Content Include="Assets\Scripts\YAMLtoJSON.js" />
     <Content Include="Assets\WoopAdapter.js" />
     <Content Include="Assets\Scripts\AddSlashes.js" />
     <Content Include="Assets\Scripts\AndroidIOSStrings.js" />

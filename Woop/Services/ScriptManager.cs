@@ -47,26 +47,29 @@ namespace Woop.Services
             var adapterFile = await StorageFile.GetFileFromApplicationUriAsync(new Uri("ms-appx:///Assets/WoopAdapter.js"));
             var adapterScript = await ReadScriptContentAsync(adapterFile);
 
-            var builtInScripts = await InitializeScripts(scriptsFolder, adapterScript, true);
+            var requireFile = await StorageFile.GetFileFromApplicationUriAsync(new Uri("ms-appx:///Assets/Require.js"));
+            var requireScript = await ReadScriptContentAsync(requireFile);
+
+            var builtInScripts = await InitializeScripts(scriptsFolder, adapterScript, requireScript, true);
 
             var customScripts = Enumerable.Empty<Script>();
             if (!string.IsNullOrWhiteSpace(_settingsService.CustomScriptsFolderLocation))
             {
                 var folder = await StorageFolder.GetFolderFromPathAsync(_settingsService.CustomScriptsFolderLocation);
-                customScripts = await InitializeScripts(folder, adapterScript, false);
+                customScripts = await InitializeScripts(folder, adapterScript, requireScript, false);
             }
 
             return builtInScripts.Concat(customScripts);
         }
 
-        private async Task<IEnumerable<Script>> InitializeScripts(StorageFolder folder, string adapterScript, bool builtIn)
+        private async Task<IEnumerable<Script>> InitializeScripts(StorageFolder folder, string adapterScript, string requireScript, bool builtIn)
         {
             var scripts = new List<Script>();
             foreach (var file in await folder.GetFilesAsync())
             {
                 try
                 {
-                    var script = await InitializeScript(file, adapterScript, builtIn);
+                    var script = await InitializeScript(file, adapterScript, requireScript, builtIn);
                     scripts.Add(script);
                 }
                 catch (Exception e)
@@ -79,14 +82,11 @@ namespace Woop.Services
             return scripts;
         }
 
-        private async Task<Script> InitializeScript(StorageFile file, string adapterScript, bool builtIn)
+        private async Task<Script> InitializeScript(StorageFile file, string adapterScript, string requireScript, bool builtIn)
         {
             var content = await ReadScriptContentAsync(file);
             var context = _runtime.CreateContext(true);
-#pragma warning disable CS0618 // Type or member is obsolete
-            JSRequireLoader.EnableRequire(context);
-#pragma warning restore CS0618 // Type or member is obsolete
-
+            RequireLoader.EnableRequire(context, requireScript);
             var result = context.RunScript(content);
             result = context.RunScript(adapterScript);
             return new Script(context, content, builtIn);
