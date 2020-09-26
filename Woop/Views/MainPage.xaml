@@ -67,7 +67,11 @@
                 Style="{StaticResource TitleBarButtonStyle}">
                 <Button.Flyout>
                     <MenuFlyout Placement="BottomEdgeAlignedLeft">
-                        <MenuFlyoutItem Text="Clear" />
+                        <MenuFlyoutItem Command="{x:Bind ViewModel.ClearCommand}" Text="Clear">
+                            <MenuFlyoutItem.KeyboardAccelerators>
+                                <KeyboardAccelerator Key="N" Modifiers="Control" />
+                            </MenuFlyoutItem.KeyboardAccelerators>
+                        </MenuFlyoutItem>
                         <MenuFlyoutSeparator />
                         <MenuFlyoutItem
                             Command="{x:Bind ViewModel.OpenPickerCommand}"

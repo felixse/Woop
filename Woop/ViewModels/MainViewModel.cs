@@ -41,6 +41,7 @@ namespace Woop.ViewModels
             OpenPickerCommand = new RelayCommand(OpenPicker);
             ClosePickerCommand = new RelayCommand(ClosePicker);
             GetMoreScriptsCommand = new AsyncRelayCommand(GetMoreScripts);
+            ClearCommand = new RelayCommand(Clear);
 
             FilteredScripts = new ObservableCollection<ScriptViewModel>();
 
@@ -65,6 +66,8 @@ namespace Woop.ViewModels
         public IRelayCommand ClosePickerCommand { get; }
 
         public IAsyncRelayCommand GetMoreScriptsCommand { get; }
+
+        public IRelayCommand ClearCommand { get; }
 
         public ObservableCollection<ScriptViewModel> FilteredScripts
         {
@@ -131,6 +134,12 @@ namespace Woop.ViewModels
                     Query = null;
                 }
             }
+        }
+
+        public void Clear()
+        {
+            Selection = null;
+            Buffer = string.Empty;
         }
 
         public async Task GetMoreScripts()
