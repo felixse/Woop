@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
+using Windows.System;
 using Windows.UI.Core;
 using Woop.Models;
 using Woop.Services;
@@ -39,6 +40,7 @@ namespace Woop.ViewModels
             ReRunLastScriptCommand = new RelayCommand(ReRunLastScript, () => _lastRunScript != null);
             OpenPickerCommand = new RelayCommand(OpenPicker);
             ClosePickerCommand = new RelayCommand(ClosePicker);
+            GetMoreScriptsCommand = new AsyncRelayCommand(GetMoreScripts);
 
             FilteredScripts = new ObservableCollection<ScriptViewModel>();
 
@@ -61,6 +63,8 @@ namespace Woop.ViewModels
         public IRelayCommand OpenPickerCommand { get; }
 
         public IRelayCommand ClosePickerCommand { get; }
+
+        public IAsyncRelayCommand GetMoreScriptsCommand { get; }
 
         public ObservableCollection<ScriptViewModel> FilteredScripts
         {
@@ -127,6 +131,11 @@ namespace Woop.ViewModels
                     Query = null;
                 }
             }
+        }
+
+        public async Task GetMoreScripts()
+        {
+            await Launcher.LaunchUriAsync(new Uri("https://github.com/IvanMathy/Boop/tree/main/Scripts"));
         }
 
         public void OpenPicker()

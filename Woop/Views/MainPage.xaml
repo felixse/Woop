@@ -91,7 +91,7 @@
                             </MenuFlyoutItem.KeyboardAccelerators>
                         </MenuFlyoutItem>
                         <MenuFlyoutItem IsEnabled="False" Text="Reload Scripts" />
-                        <MenuFlyoutItem IsEnabled="False" Text="Get more scripts..." />
+                        <MenuFlyoutItem Command="{x:Bind ViewModel.GetMoreScriptsCommand}" Text="Get more scripts..." />
                         <MenuFlyoutSeparator />
                         <MenuFlyoutItem Click="OnSettingsTapped" Text="Settings">
                             <MenuFlyoutItem.Icon>
