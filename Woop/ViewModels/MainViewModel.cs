@@ -42,6 +42,7 @@ namespace Woop.ViewModels
             ClosePickerCommand = new RelayCommand(ClosePicker);
             GetMoreScriptsCommand = new AsyncRelayCommand(GetMoreScripts);
             ClearCommand = new RelayCommand(Clear);
+            ReloadScriptsCommand = new AsyncRelayCommand(InitializeAsync);
 
             FilteredScripts = new ObservableCollection<ScriptViewModel>();
 
@@ -50,6 +51,9 @@ namespace Woop.ViewModels
 
         public async Task InitializeAsync()
         {
+            ClosePicker();
+            _lastRunScript = null;
+
             var scripts = await _scriptManager.InitializeAsync();
 
             _scripts = scripts.Select(s => new ScriptViewModel(s));
@@ -68,6 +72,8 @@ namespace Woop.ViewModels
         public IAsyncRelayCommand GetMoreScriptsCommand { get; }
 
         public IRelayCommand ClearCommand { get; }
+
+        public IAsyncRelayCommand ReloadScriptsCommand { get; }
 
         public ObservableCollection<ScriptViewModel> FilteredScripts
         {

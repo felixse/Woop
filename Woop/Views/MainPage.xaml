@@ -94,7 +94,11 @@
                                 <KeyboardAccelerator Key="B" Modifiers="Control,Shift" />
                             </MenuFlyoutItem.KeyboardAccelerators>
                         </MenuFlyoutItem>
-                        <MenuFlyoutItem IsEnabled="False" Text="Reload Scripts" />
+                        <MenuFlyoutItem Command="{x:Bind ViewModel.ReloadScriptsCommand}" Text="Reload Scripts">
+                            <MenuFlyoutItem.KeyboardAccelerators>
+                                <KeyboardAccelerator Key="R" Modifiers="Control,Shift" />
+                            </MenuFlyoutItem.KeyboardAccelerators>
+                        </MenuFlyoutItem>
                         <MenuFlyoutItem Command="{x:Bind ViewModel.GetMoreScriptsCommand}" Text="Get more scripts..." />
                         <MenuFlyoutSeparator />
                         <MenuFlyoutItem Click="OnSettingsTapped" Text="Settings">

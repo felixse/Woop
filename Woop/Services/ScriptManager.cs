@@ -9,7 +9,7 @@ using System.Linq;
 
 namespace Woop.Services
 {
-    class ScriptManager
+    public class ScriptManager
     {
         private readonly ChakraRuntime _runtime;
         private readonly SettingsService _settingsService;
