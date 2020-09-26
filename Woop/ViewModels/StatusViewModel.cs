@@ -10,6 +10,7 @@ namespace Woop.ViewModels
         {
             Normal,
             Info,
+            Success,
             Error
         }
 
@@ -17,8 +18,8 @@ namespace Woop.ViewModels
 
         private string _text;
         private StatusType _type;
-        private string _nextText;
-        private StatusType _nextType;
+        private string _defaultText;
+        private StatusType _defaultType;
 
         public string Text
         {
@@ -38,11 +39,14 @@ namespace Woop.ViewModels
             Text = text;
             Type = type;
 
+            _defaultText = text;
+            _defaultType = type;
+
             _timer = new DispatcherTimer();
             _timer.Tick += OnTimerElapsed;
         }
 
-        public void Set(string text, StatusType type)
+        public void Set(string text, StatusType type, TimeSpan? duration = null)
         {
             if (_timer.IsEnabled)
             {
@@ -52,29 +56,17 @@ namespace Woop.ViewModels
             Text = text;
             Type = type;
 
-        }
-
-        public void Set(string text, StatusType type, TimeSpan duration, string nextText, StatusType nextType)
-        {
-            if (_timer.IsEnabled)
+            if (duration.HasValue)
             {
-                _timer.Stop();
+                _timer.Interval = duration.Value;
+                _timer.Start();
             }
-
-            _nextText = nextText;
-            _nextType = nextType;
-
-            Text = text;
-            Type = type;
-
-            _timer.Interval = duration;
-            _timer.Start();
         }
 
         private void OnTimerElapsed(object sender, object e)
         {
-            Text = _nextText;
-            Type = _nextType;
+            Text = _defaultText;
+            Type = _defaultType;
         }
     }
 }

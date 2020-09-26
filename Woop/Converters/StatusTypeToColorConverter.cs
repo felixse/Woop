@@ -18,6 +18,8 @@ namespace Woop.Converters
                         return new SolidColorBrush(Colors.Transparent);
                     case StatusViewModel.StatusType.Info:
                         return new SolidColorBrush(Microsoft.Toolkit.Uwp.Helpers.ColorHelper.ToColor("#0063B1"));
+                    case StatusViewModel.StatusType.Success:
+                        return new SolidColorBrush(Microsoft.Toolkit.Uwp.Helpers.ColorHelper.ToColor("#10893E"));
                     case StatusViewModel.StatusType.Error:
                         return new SolidColorBrush(Microsoft.Toolkit.Uwp.Helpers.ColorHelper.ToColor("#E74856"));
                 }

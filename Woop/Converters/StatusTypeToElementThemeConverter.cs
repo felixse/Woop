@@ -16,6 +16,7 @@ namespace Woop.Converters
                     case StatusViewModel.StatusType.Normal:
                         return ElementTheme.Default;
                     case StatusViewModel.StatusType.Info:
+                    case StatusViewModel.StatusType.Success:
                     case StatusViewModel.StatusType.Error:
                         return ElementTheme.Dark;
                 }

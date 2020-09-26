@@ -17,6 +17,7 @@ namespace Woop.ViewModels
     {
         private const string GetStarted = "Press Ctrl+B to get started";
         private const string SelectYourAction = "Select your action";
+        private const string ReloadedScripts = "Reloaded Scripts";
 
         private readonly ScriptManager _scriptManager;
         private readonly CoreDispatcher _dispatcher;
@@ -42,7 +43,7 @@ namespace Woop.ViewModels
             ClosePickerCommand = new RelayCommand(ClosePicker);
             GetMoreScriptsCommand = new AsyncRelayCommand(GetMoreScripts);
             ClearCommand = new RelayCommand(Clear);
-            ReloadScriptsCommand = new AsyncRelayCommand(InitializeAsync);
+            ReloadScriptsCommand = new AsyncRelayCommand(ReloadScripts);
 
             FilteredScripts = new ObservableCollection<ScriptViewModel>();
 
@@ -51,11 +52,7 @@ namespace Woop.ViewModels
 
         public async Task InitializeAsync()
         {
-            ClosePicker();
-            _lastRunScript = null;
-
             var scripts = await _scriptManager.InitializeAsync();
-
             _scripts = scripts.Select(s => new ScriptViewModel(s));
         }
 
@@ -142,6 +139,14 @@ namespace Woop.ViewModels
             }
         }
 
+        public async Task ReloadScripts()
+        {
+            ClosePicker();
+            _lastRunScript = null;
+            await InitializeAsync();
+            Status.Set(ReloadedScripts, StatusViewModel.StatusType.Success, TimeSpan.FromSeconds(10));
+        }
+
         public void Clear()
         {
             Selection = null;
@@ -199,7 +204,7 @@ namespace Woop.ViewModels
         {
             _dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
             {
-                Status.Set(error, StatusViewModel.StatusType.Error, TimeSpan.FromSeconds(10), GetStarted, StatusViewModel.StatusType.Normal);
+                Status.Set(error, StatusViewModel.StatusType.Error, TimeSpan.FromSeconds(10));
             });
         }
 
@@ -207,7 +212,7 @@ namespace Woop.ViewModels
         {
             _dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
             {
-                Status.Set(info, StatusViewModel.StatusType.Info, TimeSpan.FromSeconds(10), GetStarted, StatusViewModel.StatusType.Normal);
+                Status.Set(info, StatusViewModel.StatusType.Info, TimeSpan.FromSeconds(10));
             });
         }
 
