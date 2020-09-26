@@ -38,6 +38,7 @@ namespace Woop.ViewModels
             RunSelectedScriptCommand = new RelayCommand(RunSelectedScript);
             ReRunLastScriptCommand = new RelayCommand(ReRunLastScript, () => _lastRunScript != null);
             OpenPickerCommand = new RelayCommand(OpenPicker);
+            ClosePickerCommand = new RelayCommand(ClosePicker);
 
             FilteredScripts = new ObservableCollection<ScriptViewModel>();
 
@@ -58,6 +59,8 @@ namespace Woop.ViewModels
         public IRelayCommand ReRunLastScriptCommand { get; }
 
         public IRelayCommand OpenPickerCommand { get; }
+
+        public IRelayCommand ClosePickerCommand { get; }
 
         public ObservableCollection<ScriptViewModel> FilteredScripts
         {
@@ -138,7 +141,7 @@ namespace Woop.ViewModels
             _lastRunScript = SelectedScript;
             ClosePicker();
             var text = _lastRunScript.Script.Run(Selection?.Content, Buffer, ShowInfo, ShowError, _ => { });
-            
+
             UpdateBuffer(text);
         }
 

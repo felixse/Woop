@@ -12,6 +12,7 @@ using Woop.Models;
 using Woop.Services;
 using Windows.UI;
 using Windows.UI.Xaml.Media;
+using Windows.UI.Xaml.Controls.Primitives;
 
 namespace Woop.Views
 {
@@ -19,6 +20,7 @@ namespace Woop.Views
     {
         private CoreApplicationViewTitleBar _coreTitleBar = CoreApplication.GetCurrentView().TitleBar;
         private readonly SettingsService _settingsService;
+        private long _isOpenPropertyChangedCallbackToken;
 
         public double CoreTitleBarHeight => _coreTitleBar.Height;
 
@@ -60,6 +62,15 @@ namespace Woop.Views
             coreTitleBar.ExtendViewIntoTitleBar = true;
 
             SetTitleBarColors();
+
+            _isOpenPropertyChangedCallbackToken = SelectorPopup.RegisterPropertyChangedCallback(Popup.IsOpenProperty, (s, e) =>
+            {
+                if (SelectorPopup.IsOpen)
+                {
+                    FocusAction.TargetObject = Query;
+                    FocusAction.Execute(s, e);
+                }
+            });
         }
 
         private void SetTitleBarColors()
@@ -96,12 +107,7 @@ namespace Woop.Views
 
         private void Query_KeyDown(object sender, KeyRoutedEventArgs e)
         {
-            if (e.Key == VirtualKey.Escape)
-            {
-                ViewModel.ClosePicker();
-                Buffer.Focus(FocusState.Programmatic);
-            } 
-            else if (e.Key == VirtualKey.Enter)
+            if (e.Key == VirtualKey.Enter)
             {
                 ViewModel.RunSelectedScript();
                 Buffer.Focus(FocusState.Programmatic);
@@ -125,6 +131,7 @@ namespace Woop.Views
         {
             Window.Current.SetTitleBar(null);
             _settingsService.ApplicationThemeChanged -= OnApplicationThemeChanged;
+            SelectorPopup.UnregisterPropertyChangedCallback(Popup.IsOpenProperty, _isOpenPropertyChangedCallbackToken);
             ViewModel = null;
             _coreTitleBar = null;
         }

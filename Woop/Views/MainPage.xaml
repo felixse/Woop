@@ -28,6 +28,10 @@
             </toolkitConverters:BoolToObjectConverter.FalseValue>
         </toolkitConverters:BoolToObjectConverter>
         <toolkitConverters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
+        <toolkitConverters:BoolToVisibilityConverter
+            x:Key="InvertedBoolToVisibilityConverter"
+            FalseValue="Visible"
+            TrueValue="Collapsed" />
         <toolkitConverters:BoolNegationConverter x:Key="BoolNegationConverter" />
         <SolidColorBrush x:Key="TextControlBorderBrushFocused" Color="Transparent" />
         <Thickness x:Key="TextControlBorderThemeThicknessFocused">0,0,0,0</Thickness>
@@ -65,9 +69,20 @@
                     <MenuFlyout Placement="BottomEdgeAlignedLeft">
                         <MenuFlyoutItem Text="Clear" />
                         <MenuFlyoutSeparator />
-                        <MenuFlyoutItem Command="{x:Bind ViewModel.OpenPickerCommand}" Text="Open Picker">
+                        <MenuFlyoutItem
+                            Command="{x:Bind ViewModel.OpenPickerCommand}"
+                            Text="Open Picker"
+                            Visibility="{x:Bind ViewModel.PickerOpened, Mode=OneWay, Converter={StaticResource InvertedBoolToVisibilityConverter}}">
                             <MenuFlyoutItem.KeyboardAccelerators>
                                 <KeyboardAccelerator Key="B" Modifiers="Control" />
+                            </MenuFlyoutItem.KeyboardAccelerators>
+                        </MenuFlyoutItem>
+                        <MenuFlyoutItem
+                            Command="{x:Bind ViewModel.ClosePickerCommand}"
+                            Text="Close Picker"
+                            Visibility="{x:Bind ViewModel.PickerOpened, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}">
+                            <MenuFlyoutItem.KeyboardAccelerators>
+                                <KeyboardAccelerator Key="Escape" />
                             </MenuFlyoutItem.KeyboardAccelerators>
                         </MenuFlyoutItem>
                         <MenuFlyoutItem Command="{x:Bind ViewModel.ReRunLastScriptCommand}" Text="Re-execute Last Script">
@@ -116,79 +131,84 @@
             Text="{x:Bind ViewModel.Buffer, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
             TextWrapping="Wrap" />
         <Border
+            x:Name="SelectorBackdrop"
             Grid.Row="1"
             Background="Transparent"
+            IsHitTestVisible="True"
             Visibility="{x:Bind ViewModel.PickerOpened, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}">
-            <StackPanel
-                x:Name="Selector"
-                Margin="20"
-                HorizontalAlignment="Stretch"
-                VerticalAlignment="Top"
-                Background="{ThemeResource SystemControlAcrylicElementBrush}"
-                CornerRadius="5">
-                <StackPanel.Shadow>
-                    <ThemeShadow />
-                </StackPanel.Shadow>
-                <TextBox
-                    x:Name="Query"
-                    Background="Transparent"
-                    BorderThickness="0"
-                    CornerRadius="0"
-                    FontSize="24"
-                    KeyDown="Query_KeyDown"
-                    PlaceholderText="Start typing..."
-                    Text="{x:Bind ViewModel.Query, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
-                    <TextBox.Resources>
-                        <SolidColorBrush x:Key="TextControlBackgroundFocused" Color="Transparent" />
-                    </TextBox.Resources>
-                    <Interactivity:Interaction.Behaviors>
-                        <Core:DataTriggerBehavior Binding="{x:Bind ViewModel.PickerOpened, Mode=OneWay}" Value="true">
-                            <actions:FocusAction />
-                        </Core:DataTriggerBehavior>
-                    </Interactivity:Interaction.Behaviors>
-                </TextBox>
-                <ListBox
-                    x:Name="Scripts"
-                    MaxHeight="300"
-                    ItemsSource="{x:Bind ViewModel.FilteredScripts, Mode=OneWay}"
-                    SelectedItem="{x:Bind ViewModel.SelectedScript, Mode=TwoWay}"
-                    SelectionChanged="ListBox_SelectionChanged"
-                    SelectionMode="Single"
-                    UseSystemFocusVisuals="False">
-                    <ListBox.Resources>
-                        <SolidColorBrush x:Key="ListBoxItemSelectedBackgroundThemeBrush" Color="Blue" />
-                    </ListBox.Resources>
-                    <ListBox.ItemContainerStyle>
-                        <Style TargetType="ListBoxItem">
-                            <Setter Property="CornerRadius" Value="5" />
-                            <Setter Property="Background" Value="Transparent" />
-                            <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-                        </Style>
-                    </ListBox.ItemContainerStyle>
-                    <ListBox.ItemTemplate>
-                        <DataTemplate x:DataType="viewModels:ScriptViewModel">
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="auto" />
-                                    <ColumnDefinition Width="*" />
-                                </Grid.ColumnDefinitions>
-                                <Image
-                                    x:Name="myXAMLImageElement"
-                                    Width="32"
-                                    Height="32"
-                                    Margin="0,0,5,0"
-                                    Opacity="0.7"
-                                    Source="{x:Bind Script.Metadata.Icon, Converter={StaticResource IconNameToIconConverter}}" />
-                                <StackPanel Grid.Column="1">
-                                    <TextBlock FontSize="24" Text="{x:Bind Script.Metadata.Name}" />
-                                    <TextBlock Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}" Text="{x:Bind Script.Metadata.Description}" />
-                                </StackPanel>
-                            </Grid>
+            <Popup x:Name="SelectorPopup" IsOpen="{x:Bind ViewModel.PickerOpened, Mode=OneWay}">
+                <Border Width="{Binding ActualWidth, ElementName=SelectorBackdrop, Mode=OneWay}">
+                    <StackPanel
+                        x:Name="Selector"
+                        Margin="20"
+                        HorizontalAlignment="Stretch"
+                        Background="{ThemeResource SystemControlAcrylicElementBrush}"
+                        CornerRadius="4">
+                        <StackPanel.Shadow>
+                            <ThemeShadow />
+                        </StackPanel.Shadow>
+                        <TextBox
+                            x:Name="Query"
+                            Background="Transparent"
+                            BorderThickness="0"
+                            CornerRadius="0"
+                            FontSize="24"
+                            KeyDown="Query_KeyDown"
+                            PlaceholderText="Start typing..."
+                            Text="{x:Bind ViewModel.Query, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                            <Interactivity:Interaction.Behaviors>
+                                <Core:DataTriggerBehavior Binding="{x:Bind ViewModel.PickerOpened, Mode=OneWay}" Value="true">
+                                    <actions:FocusAction x:Name="FocusAction" />
+                                </Core:DataTriggerBehavior>
+                            </Interactivity:Interaction.Behaviors>
+                            <TextBox.Resources>
+                                <SolidColorBrush x:Key="TextControlBackgroundFocused" Color="Transparent" />
+                            </TextBox.Resources>
+                        </TextBox>
+                        <ListBox
+                            x:Name="Scripts"
+                            MaxHeight="300"
+                            Background="Transparent"
+                            ItemsSource="{x:Bind ViewModel.FilteredScripts, Mode=OneWay}"
+                            SelectedItem="{x:Bind ViewModel.SelectedScript, Mode=TwoWay}"
+                            SelectionChanged="ListBox_SelectionChanged"
+                            SelectionMode="Single"
+                            UseSystemFocusVisuals="False">
+                            <ListBox.Resources>
+                                <SolidColorBrush x:Key="ListBoxItemSelectedBackgroundThemeBrush" Color="Blue" />
+                            </ListBox.Resources>
+                            <ListBox.ItemContainerStyle>
+                                <Style TargetType="ListBoxItem">
+                                    <Setter Property="CornerRadius" Value="5" />
+                                    <Setter Property="Background" Value="Transparent" />
+                                    <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                                </Style>
+                            </ListBox.ItemContainerStyle>
+                            <ListBox.ItemTemplate>
+                                <DataTemplate x:DataType="viewModels:ScriptViewModel">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="auto" />
+                                            <ColumnDefinition Width="*" />
+                                        </Grid.ColumnDefinitions>
+                                        <Image
+                                            Width="32"
+                                            Height="32"
+                                            Margin="0,0,5,0"
+                                            Opacity="0.7"
+                                            Source="{x:Bind Script.Metadata.Icon, Converter={StaticResource IconNameToIconConverter}}" />
+                                        <StackPanel Grid.Column="1">
+                                            <TextBlock FontSize="24" Text="{x:Bind Script.Metadata.Name}" />
+                                            <TextBlock Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}" Text="{x:Bind Script.Metadata.Description}" />
+                                        </StackPanel>
+                                    </Grid>
 
-                        </DataTemplate>
-                    </ListBox.ItemTemplate>
-                </ListBox>
-            </StackPanel>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
+                    </StackPanel>
+                </Border>
+            </Popup>
         </Border>
     </Grid>
 </Page>
