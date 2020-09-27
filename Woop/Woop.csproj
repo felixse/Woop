@@ -124,6 +124,8 @@
     <Compile Include="Converters\IconNameToIconConverter.cs" />
     <Compile Include="Converters\StatusTypeToColorConverter.cs" />
     <Compile Include="Converters\StatusTypeToElementThemeConverter.cs" />
+    <Compile Include="Services\BoopPseudoLanguage.cs" />
+    <Compile Include="Views\RichEditBoxFormatter.cs" />
     <Compile Include="Services\RequireLoader.cs" />
     <Compile Include="Services\SettingsService.cs" />
     <Compile Include="ViewModels\SettingsViewModel.cs" />
@@ -143,6 +145,7 @@
     <Compile Include="Views\SettingsDialog.xaml.cs">
       <DependentUpon>SettingsDialog.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\SyntaxHighlightingRichEditBox.cs" />
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">
@@ -310,6 +313,9 @@
   <ItemGroup>
     <PackageReference Include="ChakraCore.NET">
       <Version>1.3.2</Version>
+    </PackageReference>
+    <PackageReference Include="ColorCode.Core">
+      <Version>2.0.6</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
       <Version>6.2.10</Version>

@@ -224,10 +224,13 @@ namespace Woop.ViewModels
 
         private void UpdateBuffer(string text)
         {
-            if (Selection != null)
+            if (Selection?.Length != 0)
             {
-                Buffer = Buffer.Remove(Selection.Start, Selection.Length);
-                Buffer = Buffer.Insert(Selection.Start, text);
+                var start = Selection.Start;
+                var length = Math.Abs(Selection.Length);
+
+                Buffer = Buffer.Remove(start, length);
+                Buffer = Buffer.Insert(start, text);
             }
             else
             {

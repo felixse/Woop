@@ -8,7 +8,6 @@ using Windows.ApplicationModel.Core;
 using Windows.System;
 using System.Numerics;
 using Woop.ViewModels;
-using Woop.Models;
 using Woop.Services;
 using Windows.UI;
 using Windows.UI.Xaml.Media;
@@ -20,7 +19,7 @@ namespace Woop.Views
     {
         private CoreApplicationViewTitleBar _coreTitleBar = CoreApplication.GetCurrentView().TitleBar;
         private readonly SettingsService _settingsService;
-        private long _isOpenPropertyChangedCallbackToken;
+        private readonly long _isOpenPropertyChangedCallbackToken;
 
         public double CoreTitleBarHeight => _coreTitleBar.Height;
 
@@ -102,7 +101,6 @@ namespace Woop.Views
         private async void Page_Loaded(object sender, RoutedEventArgs e)
         {
             await ViewModel.InitializeAsync();
-            Buffer.Focus(FocusState.Programmatic);
         }
 
         private void Query_KeyDown(object sender, KeyRoutedEventArgs e)
@@ -110,7 +108,6 @@ namespace Woop.Views
             if (e.Key == VirtualKey.Enter)
             {
                 ViewModel.RunSelectedScript();
-                Buffer.Focus(FocusState.Programmatic);
             }
             else if (e.Key == VirtualKey.Up)
             {
@@ -134,23 +131,6 @@ namespace Woop.Views
             SelectorPopup.UnregisterPropertyChangedCallback(Popup.IsOpenProperty, _isOpenPropertyChangedCallbackToken);
             ViewModel = null;
             _coreTitleBar = null;
-        }
-
-        private void Buffer_SelectionChanged(object sender, RoutedEventArgs e)
-        {
-            if (!string.IsNullOrEmpty(Buffer.SelectedText))
-            {
-                ViewModel.Selection = new Selection
-                {
-                    Start = Buffer.SelectionStart,
-                    Length = Buffer.SelectionLength,
-                    Content = Buffer.SelectedText
-                };
-            }
-            else
-            {
-                ViewModel.Selection = null;
-            }
         }
 
         private async void OnSettingsTapped(object sender, RoutedEventArgs e)
