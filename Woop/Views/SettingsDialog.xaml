@@ -44,28 +44,32 @@
         </Grid>
         <StackPanel Margin="12">
             <controls:HeaderedContentControl Margin="0,0,0,12" Header="Application theme">
-                <StackPanel Orientation="Horizontal">
-                    <ComboBox
-                        Width="200"
-                        Margin="0,8,8,8"
-                        ItemsSource="{x:Bind ViewModel.ElementThemes}"
-                        SelectedItem="{x:Bind ViewModel.SelectedApplicationTheme, Mode=TwoWay}">
-                        <ComboBox.ItemTemplate>
-                            <DataTemplate x:DataType="ElementTheme">
-                                <TextBlock Text="{x:Bind Converter={StaticResource ElementThemeToTextConverter}}" />
-                            </DataTemplate>
-                        </ComboBox.ItemTemplate>
-                    </ComboBox>
-                </StackPanel>
+                <ComboBox
+                    Width="200"
+                    Margin="0,8,8,8"
+                    ItemsSource="{x:Bind ViewModel.ElementThemes}"
+                    SelectedItem="{x:Bind ViewModel.SelectedApplicationTheme, Mode=TwoWay}">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate x:DataType="ElementTheme">
+                            <TextBlock Text="{x:Bind Converter={StaticResource ElementThemeToTextConverter}}" />
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
             </controls:HeaderedContentControl>
 
             <controls:HeaderedContentControl Margin="0,0,0,12" Header="Custom scripts folder location">
-                <StackPanel Orientation="Horizontal">
-                    <TextBox
-                        Width="200"
-                        Margin="0,8,8,8"
-                        Text="{x:Bind ViewModel.CustomScriptsFolderLocation, Mode=TwoWay}" />
-                    <Button Command="{x:Bind ViewModel.BrowseCommand}" Content="Browse" />
+                <StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBox
+                            Width="200"
+                            Margin="0,8,8,8"
+                            Text="{x:Bind ViewModel.CustomScriptsFolderLocation, Mode=TwoWay}" />
+                        <Button Command="{x:Bind ViewModel.BrowseCommand}" Content="Browse" />
+                    </StackPanel>
+                    <TextBlock
+                        Foreground="OrangeRed"
+                        Text="Invalid directory"
+                        Visibility="{x:Bind ViewModel.InvalidDirectory, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}" />
                 </StackPanel>
             </controls:HeaderedContentControl>
 

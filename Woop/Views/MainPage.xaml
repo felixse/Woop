@@ -28,7 +28,6 @@
                 <SolidColorBrush Color="Transparent" />
             </toolkitConverters:BoolToObjectConverter.FalseValue>
         </toolkitConverters:BoolToObjectConverter>
-        <toolkitConverters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
         <toolkitConverters:BoolToVisibilityConverter
             x:Key="InvertedBoolToVisibilityConverter"
             FalseValue="Visible"

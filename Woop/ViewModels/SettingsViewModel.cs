@@ -2,8 +2,10 @@
 using Microsoft.Toolkit.Mvvm.Input;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Windows.Storage;
 using Windows.Storage.AccessCache;
 using Windows.Storage.Pickers;
 using Windows.UI.Xaml;
@@ -14,6 +16,7 @@ namespace Woop.ViewModels
     public class SettingsViewModel : ObservableObject
     {
         private readonly SettingsService _settingsService;
+        private bool _invalidDirectory;
 
         public SettingsViewModel(SettingsService settingsService)
         {
@@ -46,10 +49,21 @@ namespace Woop.ViewModels
             get => _settingsService.CustomScriptsFolderLocation;
             set
             {
-                // todo check if valid path and accessible
-                _settingsService.CustomScriptsFolderLocation = value;
-                OnPropertyChanged(nameof(CustomScriptsFolderLocation));
+                var valid = Directory.Exists(value);
+                InvalidDirectory = !valid;
+                if (valid)
+                {
+                    _settingsService.CustomScriptsFolderLocation = value;
+                    OnPropertyChanged(nameof(CustomScriptsFolderLocation));
+                    UpdateFutureAccessList(value);
+                }
             }
+        }
+
+        public bool InvalidDirectory
+        {
+            get => _invalidDirectory;
+            set => SetProperty(ref _invalidDirectory, value);
         }
 
         public async Task Browse()
@@ -62,9 +76,14 @@ namespace Woop.ViewModels
 
             if (folder != null)
             {
-                StorageApplicationPermissions.FutureAccessList.AddOrReplace("CustomScriptsToken", folder);
                 CustomScriptsFolderLocation = folder.Path;
             }
+        }
+
+        private async Task UpdateFutureAccessList(string path)
+        {
+            var file = await StorageFile.GetFileFromPathAsync(CustomScriptsFolderLocation);
+            StorageApplicationPermissions.FutureAccessList.AddOrReplace("CustomScriptsToken", file);
         }
     }
 }
