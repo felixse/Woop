@@ -52,7 +52,9 @@
                 <TextBlock
                     HorizontalAlignment="Center"
                     RequestedTheme="{x:Bind ViewModel.Status.Type, Mode=OneWay, Converter={StaticResource StatusTypeToElementThemeConverter}}"
-                    Text="{x:Bind ViewModel.Status.Text, Mode=OneWay}" />
+                    Text="{x:Bind ViewModel.Status.Text, Mode=OneWay}"
+                    TextTrimming="CharacterEllipsis"
+                    ToolTipService.ToolTip="{x:Bind ViewModel.Status.Text, Mode=OneWay}" />
             </Border>
 
         </Grid>
@@ -204,7 +206,11 @@
                                             Source="{x:Bind Script.Metadata.Icon, Converter={StaticResource IconNameToIconConverter}}" />
                                         <StackPanel Grid.Column="1">
                                             <TextBlock FontSize="24" Text="{x:Bind Script.Metadata.Name}" />
-                                            <TextBlock Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}" Text="{x:Bind Script.Metadata.Description}" />
+                                            <TextBlock
+                                                Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
+                                                Text="{x:Bind Script.Metadata.Description}"
+                                                TextTrimming="CharacterEllipsis"
+                                                ToolTipService.ToolTip="{x:Bind Script.Metadata.Description}" />
                                         </StackPanel>
                                     </Grid>
 
