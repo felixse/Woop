@@ -54,7 +54,7 @@ namespace Woop.Views
 
         void IBuffer.SetSelection(string text)
         {
-            Document.Selection.SetText(TextSetOptions.None, text);
+            Document.Selection.SetText(TextSetOptions.None, text ?? string.Empty);
         }
     }
 }

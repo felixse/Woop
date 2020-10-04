@@ -29,10 +29,10 @@ namespace Woop.Models
             });
         }
 
-        public string Run(string selection, string fullText, Action<string> postInfo, Action<string> postError, Action<string> insert)
+        public string Run(string selection, string fullText, int insertPosition, Action<string> postInfo, Action<string> postError)
         {
-            var input = new ScriptExecutionProperties(selection, fullText);
-            var methods = new ScriptExecutionMethods(postInfo, postError, insert);
+            var input = new ScriptExecutionProperties(selection, fullText, insertPosition);
+            var methods = new ScriptExecutionMethods(postInfo, postError);
             try
             {
                 return Context.Value.GlobalObject.CallFunction<ScriptExecutionProperties, ScriptExecutionMethods, string>("woopAdapter", input, methods);

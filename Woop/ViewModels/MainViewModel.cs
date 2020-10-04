@@ -165,14 +165,17 @@ namespace Woop.ViewModels
         {
             _lastRunScript = SelectedScript;
             ClosePicker();
-            var text = _lastRunScript.Script.Run(_buffer.GetSelection()?.Content, _buffer.GetText(), ShowInfo, ShowError, _ => { });
+            var selection = _buffer.GetSelection();
+            var text = _lastRunScript.Script.Run(selection.Content, _buffer.GetText(), selection.Start, ShowInfo, ShowError);
 
             UpdateBuffer(text);
         }
 
         public void ReRunLastScript()
         {
-            var text = _lastRunScript.Script.Run(_buffer.GetSelection()?.Content, _buffer.GetText(), ShowInfo, ShowError, _ => { });
+            var selection = _buffer.GetSelection();
+            var text = _lastRunScript.Script.Run(selection.Content, _buffer.GetText(), selection.Start, ShowInfo, ShowError);
+
             UpdateBuffer(text);
         }
 

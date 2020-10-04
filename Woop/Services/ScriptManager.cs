@@ -24,18 +24,19 @@ namespace Woop.Services
                 value.WriteProperty("fullText", instance.FullText);
                 value.WriteProperty("selection", instance.Selection ?? string.Empty);
                 value.WriteProperty("isSelection", instance.IsSelection);
+                value.WriteProperty("insertPosition", instance.InsertPosition);
             }, (value) =>
             {
                 var fullText = value.ReadProperty<string>("fullText");
                 var selection = value.ReadProperty<string>("selection");
-                return new ScriptExecutionProperties(selection, fullText);
+                var insertPosition = value.ReadProperty<int>("insertPosition");
+                return new ScriptExecutionProperties(selection, fullText, insertPosition);
             });
 
             _runtime.ServiceNode.GetService<IJSValueConverterService>().RegisterProxyConverter<ScriptExecutionMethods>((binding, instance, serviceNode) =>
             {
                 binding.SetMethod<string>("postInfo", instance.PostInfo);
                 binding.SetMethod<string>("postError", instance.PostError);
-                binding.SetMethod<string>("insert", instance.Insert);
             });
         }
 
