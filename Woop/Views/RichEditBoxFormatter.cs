@@ -76,7 +76,7 @@ namespace Woop.Views
 
         protected void StyleRange(string range, IList<Scope> scopes)
         {
-            Debug.WriteLine($"[{range}]: {scopes.FirstOrDefault()?.Name ?? "None"}");
+            //Debug.WriteLine($"[{range}]: {scopes.FirstOrDefault()?.Name ?? "None"}");
             var scopeRange = source.Substring(Index);
 
             var start = Index;

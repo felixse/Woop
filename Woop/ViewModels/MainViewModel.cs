@@ -12,6 +12,16 @@ using Woop.Services;
 
 namespace Woop.ViewModels
 {
+    public interface IBuffer
+    {
+        string GetText();
+        void SetText(string text);
+
+        Selection GetSelection();
+
+        void SetSelection(string text);
+    }
+
 
     public class MainViewModel : ObservableObject
     {
@@ -22,14 +32,13 @@ namespace Woop.ViewModels
         private readonly ScriptManager _scriptManager;
         private readonly CoreDispatcher _dispatcher;
         private readonly SettingsService _settingsService;
-        private string _buffer;
-        private Selection _selection;
         private string _query;
         private bool _pickerOpened;
         private IEnumerable<ScriptViewModel> _scripts;
         private ObservableCollection<ScriptViewModel> _filteredScripts;
         private ScriptViewModel _selectedScript;
         private ScriptViewModel _lastRunScript;
+        private IBuffer _buffer;
 
         public MainViewModel(CoreDispatcher dispatcher, SettingsService settingsService)
         {
@@ -50,8 +59,9 @@ namespace Woop.ViewModels
             Status = new StatusViewModel(GetStarted, StatusViewModel.StatusType.Normal);
         }
 
-        public async Task InitializeAsync()
+        public async Task InitializeAsync(IBuffer buffer)
         {
+            _buffer = buffer;
             var scripts = await _scriptManager.InitializeAsync();
             _scripts = scripts.Select(s => new ScriptViewModel(s));
         }
@@ -113,20 +123,6 @@ namespace Woop.ViewModels
             }
         }
 
-        public string Buffer
-        {
-            get => _buffer;
-            set => SetProperty(ref _buffer, value);
-
-        }
-
-        public Selection Selection
-        {
-            get => _selection;
-            set => SetProperty(ref _selection, value);
-
-        }
-
         public bool PickerOpened
         {
             get => _pickerOpened;
@@ -143,14 +139,14 @@ namespace Woop.ViewModels
         {
             ClosePicker();
             _lastRunScript = null;
-            await InitializeAsync();
+            await InitializeAsync(_buffer);
             Status.Set(ReloadedScripts, StatusViewModel.StatusType.Success, TimeSpan.FromSeconds(10));
         }
 
         public void Clear()
         {
-            Selection = null;
-            Buffer = string.Empty;
+            _buffer.SetSelection(null);
+            _buffer.SetText(string.Empty);
         }
 
         public async Task GetMoreScripts()
@@ -169,14 +165,14 @@ namespace Woop.ViewModels
         {
             _lastRunScript = SelectedScript;
             ClosePicker();
-            var text = _lastRunScript.Script.Run(Selection?.Content, Buffer, ShowInfo, ShowError, _ => { });
+            var text = _lastRunScript.Script.Run(_buffer.GetSelection()?.Content, _buffer.GetText(), ShowInfo, ShowError, _ => { });
 
             UpdateBuffer(text);
         }
 
         public void ReRunLastScript()
         {
-            var text = _lastRunScript.Script.Run(Selection?.Content, Buffer, ShowInfo, ShowError, _ => { });
+            var text = _lastRunScript.Script.Run(_buffer.GetSelection()?.Content, _buffer.GetText(), ShowInfo, ShowError, _ => { });
             UpdateBuffer(text);
         }
 
@@ -224,17 +220,13 @@ namespace Woop.ViewModels
 
         private void UpdateBuffer(string text)
         {
-            if (Selection?.Length != 0)
+            if (_buffer.GetSelection()?.Length != 0)
             {
-                var start = Selection.Start;
-                var length = Math.Abs(Selection.Length);
-
-                Buffer = Buffer.Remove(start, length);
-                Buffer = Buffer.Insert(start, text);
+                _buffer.SetSelection(text);
             }
             else
             {
-                Buffer = text;
+                _buffer.SetText(text);
             }
         }
     }

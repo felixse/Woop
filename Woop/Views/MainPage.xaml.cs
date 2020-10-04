@@ -100,7 +100,7 @@ namespace Woop.Views
 
         private async void Page_Loaded(object sender, RoutedEventArgs e)
         {
-            await ViewModel.InitializeAsync();
+            await ViewModel.InitializeAsync(Buffer);
         }
 
         private void Query_KeyDown(object sender, KeyRoutedEventArgs e)

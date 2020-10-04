@@ -132,10 +132,8 @@
             x:Name="Buffer"
             Grid.Row="1"
             BorderThickness="0"
-            Content="{x:Bind ViewModel.Buffer, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
             CornerRadius="0"
-            FontFamily="Consolas"
-            SelectedText="{x:Bind ViewModel.Selection, Mode=TwoWay}" />
+            FontFamily="Consolas" />
         <Border
             x:Name="SelectorBackdrop"
             Grid.Row="1"
