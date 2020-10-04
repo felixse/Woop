@@ -67,7 +67,7 @@
                         <Button Command="{x:Bind ViewModel.BrowseCommand}" Content="Browse" />
                     </StackPanel>
                     <TextBlock
-                        Foreground="OrangeRed"
+                        Foreground="{ThemeResource SystemErrorTextColor}"
                         Text="Invalid directory"
                         Visibility="{x:Bind ViewModel.InvalidDirectory, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}" />
                 </StackPanel>

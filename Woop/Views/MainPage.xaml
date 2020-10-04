@@ -131,7 +131,6 @@
         <views:SyntaxHighlightingRichEditBox
             x:Name="Buffer"
             Grid.Row="1"
-            Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
             BorderThickness="0"
             Content="{x:Bind ViewModel.Buffer, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
             CornerRadius="0"
