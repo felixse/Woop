@@ -182,13 +182,13 @@
     <Content Include="Assets\dark\sort-numbers.png" />
     <Content Include="Assets\dark\table.png" />
     <Content Include="Assets\dark\term.png" />
-    <Content Include="Assets\dark\translate.png" />
+    <Content Include="Assets\dark\translation.png" />
     <Content Include="Assets\dark\type.png" />
     <Content Include="Assets\dark\unknown.png" />
     <Content Include="Assets\dark\watch.png" />
     <Content Include="Assets\dark\website.png" />
     <Content Include="Assets\light\abacus.png" />
-    <Content Include="Assets\light\ananas.png" />
+    <Content Include="Assets\light\pineapple.png" />
     <Content Include="Assets\light\broom.png" />
     <Content Include="Assets\light\camel.png" />
     <Content Include="Assets\light\collapse.png" />
@@ -216,7 +216,7 @@
     <Content Include="Assets\light\sort-numbers.png" />
     <Content Include="Assets\light\table.png" />
     <Content Include="Assets\light\term.png" />
-    <Content Include="Assets\light\translate.png" />
+    <Content Include="Assets\light\translation.png" />
     <Content Include="Assets\light\type.png" />
     <Content Include="Assets\light\unknown.png" />
     <Content Include="Assets\light\watch.png" />
