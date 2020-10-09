@@ -1,6 +1,9 @@
-﻿namespace Woop.Models
+﻿using FuseSharp;
+using System.Collections.Generic;
+
+namespace Woop.Models
 {
-    public class ScriptMetadata
+    public class ScriptMetadata : IFuseable
     {
         public string Name { get; set; }
 
@@ -11,5 +14,12 @@
         public string Icon { get; set; }
 
         public double Bias { get; set; }
+
+        IEnumerable<FuseProperty> IFuseable.Properties => new[]
+        {
+            new FuseProperty(Name, 0.9),
+            new FuseProperty(Tags, 0.6),
+            new FuseProperty(Description, 0.2)
+        };
     }
 }

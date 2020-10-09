@@ -1,4 +1,5 @@
-﻿using Microsoft.Toolkit.Mvvm.ComponentModel;
+﻿using FuseSharp;
+using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.Toolkit.Mvvm.Input;
 using System;
 using System.Collections.Generic;
@@ -35,6 +36,7 @@ namespace Woop.ViewModels
         private string _query;
         private bool _pickerOpened;
         private IEnumerable<ScriptViewModel> _scripts;
+        private Fuse _fuse;
         private ObservableCollection<ScriptViewModel> _filteredScripts;
         private ScriptViewModel _selectedScript;
         private ScriptViewModel _lastRunScript;
@@ -64,6 +66,7 @@ namespace Woop.ViewModels
             _buffer = buffer;
             var scripts = await _scriptManager.InitializeAsync();
             _scripts = scripts.Select(s => new ScriptViewModel(s));
+            _fuse = new Fuse(threshold: 0.2);
         }
 
         public StatusViewModel Status { get; }
@@ -116,7 +119,20 @@ namespace Woop.ViewModels
                     }
                     else
                     {
-                        FilteredScripts = new ObservableCollection<ScriptViewModel>(_scripts.Where(s => s.Script.Metadata.Name.Contains(value, StringComparison.OrdinalIgnoreCase)));
+                        var results = _fuse.Search(value, _scripts.Select(s => s.Script.Metadata));
+
+                        var filtered = results.Where(r => r.Score < 0.4).ToList();
+                        filtered.Sort((left, right) =>
+                        {
+                            var leftItem = _scripts.ElementAt(left.Index);
+                            var rightItem = _scripts.ElementAt(right.Index);
+                            var leftScore = left.Score - leftItem.Script.Metadata.Bias;
+                            var rightScore = right.Score - rightItem.Script.Metadata.Bias;
+
+                            return leftScore == rightScore ? 0 : leftScore < rightScore ? -1 : 1;
+                        });
+
+                        FilteredScripts = new ObservableCollection<ScriptViewModel>(filtered.Select(result => _scripts.ElementAt(result.Index)));
                     }
                     SelectedScript = FilteredScripts.FirstOrDefault();
                 }
