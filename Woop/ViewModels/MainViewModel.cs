@@ -181,18 +181,29 @@ namespace Woop.ViewModels
         {
             _lastRunScript = SelectedScript;
             ClosePicker();
-            var selection = _buffer.GetSelection();
-            var text = _lastRunScript.Script.Run(selection.Content, _buffer.GetText(), selection.Start, ShowInfo, ShowError);
 
-            UpdateBuffer(text);
+            RunScript(_lastRunScript);
         }
 
         public void ReRunLastScript()
         {
-            var selection = _buffer.GetSelection();
-            var text = _lastRunScript.Script.Run(selection.Content, _buffer.GetText(), selection.Start, ShowInfo, ShowError);
+            RunScript(_lastRunScript);
+        }
 
-            UpdateBuffer(text);
+        private void RunScript(ScriptViewModel script)
+        {
+            var selection = _buffer.GetSelection();
+            var currentText = _buffer.GetText();
+            var text = script.Script.Run(selection.Content, _buffer.GetText(), selection.Start, ShowInfo, ShowError);
+
+            if (_buffer.GetSelection()?.Length != 0)
+            {
+                _buffer.SetSelection(text);
+            }
+            else
+            {
+                _buffer.SetText(text);
+            }
         }
 
         public void SelectNext()
@@ -235,18 +246,6 @@ namespace Woop.ViewModels
         {
             PickerOpened = false;
             Status.Set(GetStarted, StatusViewModel.StatusType.Normal);
-        }
-
-        private void UpdateBuffer(string text)
-        {
-            if (_buffer.GetSelection()?.Length != 0)
-            {
-                _buffer.SetSelection(text);
-            }
-            else
-            {
-                _buffer.SetText(text);
-            }
         }
     }
 }
