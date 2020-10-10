@@ -125,7 +125,6 @@
     <Compile Include="Converters\StatusTypeToColorConverter.cs" />
     <Compile Include="Converters\StatusTypeToElementThemeConverter.cs" />
     <Compile Include="Services\BoopPseudoLanguage.cs" />
-    <Compile Include="Views\RichEditBoxFormatter.cs" />
     <Compile Include="Services\RequireLoader.cs" />
     <Compile Include="Services\SettingsService.cs" />
     <Compile Include="ViewModels\SettingsViewModel.cs" />
@@ -142,6 +141,7 @@
     <Compile Include="Models\ScriptMetadata.cs" />
     <Compile Include="ViewModels\ScriptViewModel.cs" />
     <Compile Include="Models\Selection.cs" />
+    <Compile Include="Views\RtfFormatter.cs" />
     <Compile Include="Views\SettingsDialog.xaml.cs">
       <DependentUpon>SettingsDialog.xaml</DependentUpon>
     </Compile>

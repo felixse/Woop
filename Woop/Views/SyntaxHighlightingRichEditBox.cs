@@ -1,4 +1,6 @@
-﻿using ColorCode.Styling;
+﻿using ColorCode;
+using ColorCode.Styling;
+using Microsoft.Toolkit.Uwp.UI.Extensions;
 using Windows.System;
 using Windows.UI.Text;
 using Windows.UI.Xaml.Controls;
@@ -10,15 +12,27 @@ namespace Woop.Views
 {
     public class SyntaxHighlightingRichEditBox : RichEditBox, IBuffer
     {
+        private readonly RtfFormatter _rtfFormatter;
+        private readonly ILanguage _language;
+
         public SyntaxHighlightingRichEditBox()
         {
-            var formatter = new RichEditBoxFormatter(StyleDictionary.DefaultDark);
-            formatter.AttachRichEditBox(this, new BoopPseudoLanguage());
+            _rtfFormatter = new RtfFormatter(StyleDictionary.DefaultDark);
+            _language = new BoopPseudoLanguage();
 
             KeyDown += OnKeyDown;
+            TextChanging += OnTextChanging;
 
             DisabledFormattingAccelerators = DisabledFormattingAccelerators.All;
             IsSpellCheckEnabled = false;
+        }
+
+        private void OnTextChanging(RichEditBox sender, RichEditBoxTextChangingEventArgs args)
+        {
+            if (args.IsContentChanging)
+            {
+                UpdateText();
+            }
         }
 
         private void OnKeyDown(object sender, Windows.UI.Xaml.Input.KeyRoutedEventArgs e)
@@ -28,6 +42,36 @@ namespace Woop.Views
                 Document.Selection.TypeText("\t");
                 e.Handled = true;
             }
+        }
+
+        public void UpdateText()
+        {
+            // Attempt to get Scrollviewer offsets, to preserve location.
+            var scrollViewer = this.FindDescendant<ScrollViewer>();
+            var vertOffset = scrollViewer?.VerticalOffset;
+            var horOffset = scrollViewer?.HorizontalOffset;
+
+            var selection = Document.Selection;
+            var selectionStart = selection.StartPosition;
+            var selectionEnd = selection.EndPosition;
+
+            Document.GetText(TextGetOptions.UseCrlf, out string raw);
+            Document.Undo();
+            Document.BeginUndoGroup();
+            Document.SetText(TextSetOptions.None, raw);
+
+            var rtf = _rtfFormatter.GetRtfString(raw, _language);
+
+            Document.SetText(TextSetOptions.FormatRtf, rtf);
+
+            var newSelection = Document.Selection;
+            newSelection.StartPosition = selectionStart;
+            newSelection.EndPosition = selectionEnd;
+
+            Document.ApplyDisplayUpdates();
+            Document.EndUndoGroup();
+
+            scrollViewer?.ChangeView(horOffset, vertOffset, null, true);
         }
 
         string IBuffer.GetText()
