@@ -56,7 +56,7 @@ namespace Woop.Services
                 @"\b(?:0x[a-f0-9]+|(?:\d(?:_\d+)*\d*(?:\.\d*)?|\.\d\+)(?:e[+\-]?\d+)?)\b",
                 new Dictionary<int, string>
                 {
-                    [0] = ScopeName.Comment
+                    [0] = ScopeName.Number
                 }
             );
 
@@ -64,7 +64,7 @@ namespace Woop.Services
                 $"(?i)\\b({string.Join('|', _commonAttributes)})\\b",
                 new Dictionary<int, string>
                 {
-                    [0] = ScopeName.Keyword
+                    [0] = ScopeName.Attribute
                 }
             );
 
@@ -72,7 +72,7 @@ namespace Woop.Services
                 $"(?i)\\b({string.Join('|', _moreAttributes)})\\b",
                 new Dictionary<int, string>
                 {
-                    [0] = ScopeName.Attribute
+                    [0] = ScopeName.Keyword
                 }
             );
 
@@ -89,7 +89,7 @@ namespace Woop.Services
                 "[a-f0-9]{32}",
                 new Dictionary<int, string>
                 {
-                    [0] = ScopeName.Attribute
+                    [0] = ScopeName.Keyword
                 }
             );
 
@@ -98,7 +98,7 @@ namespace Woop.Services
                 "(<.[^(><.)]+>)",
                 new Dictionary<int, string>
                 {
-                    [0] = ScopeName.Keyword
+                    [0] = ScopeName.Attribute
                 }
             );
 

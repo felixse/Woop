@@ -1,5 +1,4 @@
 ﻿using ColorCode;
-using ColorCode.Styling;
 using Microsoft.Toolkit.Uwp.UI.Extensions;
 using Windows.System;
 using Windows.UI.Text;
@@ -17,7 +16,7 @@ namespace Woop.Views
 
         public SyntaxHighlightingRichEditBox()
         {
-            _rtfFormatter = new RtfFormatter(StyleDictionary.DefaultDark);
+            _rtfFormatter = new RtfFormatter(ColorCodeThemes.Light); // todo dynamic
             _language = new BoopPseudoLanguage();
 
             KeyDown += OnKeyDown;
