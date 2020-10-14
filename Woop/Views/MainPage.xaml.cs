@@ -72,6 +72,8 @@ namespace Woop.Views
             });
         }
 
+
+
         private void SetTitleBarColors()
         {
             // todo resources color are not correct when theme changes. hardcode values for each theme?
@@ -100,6 +102,7 @@ namespace Woop.Views
 
         private async void Page_Loaded(object sender, RoutedEventArgs e)
         {
+            LineNumbers.Initialize(Buffer);
             await ViewModel.InitializeAsync(Buffer);
         }
 

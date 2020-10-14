@@ -2,6 +2,7 @@
 using Microsoft.Toolkit.Uwp.UI.Extensions;
 using Windows.System;
 using Windows.UI.Text;
+using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Woop.Models;
 using Woop.Services;
@@ -14,16 +15,24 @@ namespace Woop.Views
         private readonly RtfFormatter _rtfFormatter;
         private readonly ILanguage _language;
 
+        public ScrollViewer ScrollViewer { get; private set; }
+
         public SyntaxHighlightingRichEditBox()
         {
-            _rtfFormatter = new RtfFormatter(ColorCodeThemes.Light); // todo dynamic
+            _rtfFormatter = new RtfFormatter(ActualTheme == ElementTheme.Light ? ColorCodeThemes.Light : ColorCodeThemes.Dark);
             _language = new BoopPseudoLanguage();
 
             KeyDown += OnKeyDown;
             TextChanging += OnTextChanging;
+            Loaded += OnLoaded;
 
             DisabledFormattingAccelerators = DisabledFormattingAccelerators.All;
             IsSpellCheckEnabled = false;
+        }
+
+        private void OnLoaded(object sender, Windows.UI.Xaml.RoutedEventArgs e)
+        {
+            ScrollViewer = this.FindDescendant<ScrollViewer>();
         }
 
         private void OnTextChanging(RichEditBox sender, RichEditBoxTextChangingEventArgs args)
@@ -46,9 +55,8 @@ namespace Woop.Views
         public void UpdateText()
         {
             // Attempt to get Scrollviewer offsets, to preserve location.
-            var scrollViewer = this.FindDescendant<ScrollViewer>();
-            var vertOffset = scrollViewer?.VerticalOffset;
-            var horOffset = scrollViewer?.HorizontalOffset;
+            var vertOffset = ScrollViewer?.VerticalOffset;
+            var horOffset = ScrollViewer?.HorizontalOffset;
 
             var selection = Document.Selection;
             var selectionStart = selection.StartPosition;
@@ -70,7 +78,7 @@ namespace Woop.Views
             Document.ApplyDisplayUpdates();
             Document.EndUndoGroup();
 
-            scrollViewer?.ChangeView(horOffset, vertOffset, null, true);
+            ScrollViewer?.ChangeView(horOffset, vertOffset, null, true);
         }
 
         string IBuffer.GetText()

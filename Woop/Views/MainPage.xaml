@@ -128,13 +128,22 @@
                 Grid.Column="1"
                 Fill="Transparent" />
         </Grid>
-        <views:SyntaxHighlightingRichEditBox
-            x:Name="Buffer"
-            Grid.Row="1"
-            BorderThickness="0"
-            CornerRadius="0"
-            SelectionHighlightColorWhenNotFocused="{ThemeResource SystemColorControlAccentBrush}"
-            FontFamily="Consolas" />
+        <Grid Grid.Row="1" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <views:LineNumbers x:Name="LineNumbers" Grid.Column="0" />
+            <views:SyntaxHighlightingRichEditBox
+                x:Name="Buffer"
+                Grid.Column="1"
+                Padding="0,6,6,6"
+                BorderThickness="0"
+                CornerRadius="0"
+                FontFamily="Consolas"
+                SelectionHighlightColorWhenNotFocused="{ThemeResource SystemColorControlAccentBrush}" />
+        </Grid>
+
         <Border
             x:Name="SelectorBackdrop"
             Grid.Row="1"
