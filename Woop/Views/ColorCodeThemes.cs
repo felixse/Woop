@@ -20,6 +20,8 @@ namespace Woop.Views
         private const string CyanTinyBitDarker = "#ff00b1b7";
         private const string CommentGreyDarkest = "#ff888ea6";
         private const string PurpleButItsLighter = "#fff8a5f8";
+        private const string White = "#ffffffff";
+        private const string Black = "#ff000000";
 
         public static StyleDictionary Light = new StyleDictionary
         {
@@ -46,6 +48,10 @@ namespace Woop.Views
             new Style(ScopeName.Keyword)
             {
                 Foreground = GreenButDarker
+            },
+            new Style(ScopeName.PlainText)
+            {
+                Foreground = Black
             }
         };
 
@@ -74,6 +80,10 @@ namespace Woop.Views
             new Style(ScopeName.Keyword)
             {
                 Foreground = Greenish
+            },
+            new Style(ScopeName.PlainText)
+            {
+                Foreground = White
             }
         };
     }

@@ -51,9 +51,7 @@ namespace Woop.Views
 
             if (scopes.Count == 0)
             {
-                Writer.Write("\\cf0 ");
-                Writer.Write(RtfEncodeText(parsedSourceCode));
-                return;
+                scopes.Add(new Scope(ScopeName.PlainText, 0, parsedSourceCode.Length));
             }
 
             foreach (Scope scope in scopes)
