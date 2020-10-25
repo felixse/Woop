@@ -74,7 +74,6 @@ namespace Woop.Views
             Document.GetText(TextGetOptions.UseCrlf, out string raw);
             Document.Undo();
             Document.BeginUndoGroup();
-            Document.SetText(TextSetOptions.None, raw);
 
             var rtf = _rtfFormatter.GetRtfString(raw, _language);
 
