@@ -12,7 +12,7 @@ namespace Woop.Views
 {
     public class SyntaxHighlightingRichEditBox : RichEditBox, IBuffer
     {
-        private readonly RtfFormatter _rtfFormatter;
+        private RtfFormatter _rtfFormatter;
         private readonly ILanguage _language;
 
         public ScrollViewer ScrollViewer { get; private set; }
@@ -25,9 +25,18 @@ namespace Woop.Views
             KeyDown += OnKeyDown;
             TextChanging += OnTextChanging;
             Loaded += OnLoaded;
+            ActualThemeChanged += OnActualThemeChanged;
 
             DisabledFormattingAccelerators = DisabledFormattingAccelerators.All;
             IsSpellCheckEnabled = false;
+
+            ActualThemeChanged += OnActualThemeChanged;
+        }
+
+        private void OnActualThemeChanged(FrameworkElement sender, object args)
+        {
+            _rtfFormatter = new RtfFormatter(ActualTheme == ElementTheme.Light ? ColorCodeThemes.Light : ColorCodeThemes.Dark);
+            UpdateText();
         }
 
         private void OnLoaded(object sender, Windows.UI.Xaml.RoutedEventArgs e)

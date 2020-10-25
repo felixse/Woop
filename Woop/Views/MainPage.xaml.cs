@@ -12,6 +12,7 @@ using Woop.Services;
 using Windows.UI;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Controls.Primitives;
+using Microsoft.Toolkit.Uwp.Helpers;
 
 namespace Woop.Views
 {
@@ -61,6 +62,7 @@ namespace Woop.Views
             coreTitleBar.ExtendViewIntoTitleBar = true;
 
             SetTitleBarColors();
+            Root.RequestedTheme = _settingsService.ApplicationTheme;
 
             _isOpenPropertyChangedCallbackToken = SelectorPopup.RegisterPropertyChangedCallback(Popup.IsOpenProperty, (s, e) =>
             {
@@ -72,30 +74,38 @@ namespace Woop.Views
             });
         }
 
-
-
         private void SetTitleBarColors()
         {
-            // todo resources color are not correct when theme changes. hardcode values for each theme?
-
             var titleBar = ApplicationView.GetForCurrentView().TitleBar;
 
             titleBar.ButtonBackgroundColor = Colors.Transparent;
             titleBar.ButtonInactiveBackgroundColor = Colors.Transparent;
 
-            titleBar.ButtonHoverBackgroundColor = (App.Current.Resources["TitleBarButtonPointerOverBackground"] as SolidColorBrush).Color;
-            titleBar.ButtonPressedBackgroundColor = (App.Current.Resources["TitleBarButtonPressedBackground"] as SolidColorBrush).Color;
+            if (ActualTheme == ElementTheme.Light)
+            {
+                titleBar.ButtonHoverBackgroundColor = "#FFE6E6E6".ToColor();
+                titleBar.ButtonPressedBackgroundColor = "#FFCCCCCC".ToColor();
 
-            titleBar.ButtonForegroundColor = (Color)Resources["SystemBaseHighColor"];
-            titleBar.ButtonHoverForegroundColor = (Color)Resources["SystemBaseHighColor"];
-            titleBar.ButtonPressedForegroundColor = (Color)Resources["SystemBaseHighColor"];
+                titleBar.ButtonForegroundColor = Colors.Black;
+                titleBar.ButtonHoverForegroundColor = Colors.Black;
+                titleBar.ButtonPressedForegroundColor = Colors.Black;
+            }
+            else
+            {
+                titleBar.ButtonHoverBackgroundColor = "#FF191919".ToColor();
+                titleBar.ButtonPressedBackgroundColor = "#FF333333".ToColor();
+
+                titleBar.ButtonForegroundColor = Colors.White;
+                titleBar.ButtonHoverForegroundColor = Colors.White;
+                titleBar.ButtonPressedForegroundColor = Colors.White;
+            }
         }
 
         private async void OnApplicationThemeChanged(object sender, ElementTheme e)
         {
             await Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
             {
-                RequestedTheme = e;
+                Root.RequestedTheme = e;
                 SetTitleBarColors();
             });
         }

@@ -11,6 +11,7 @@
     xmlns:toolkitConverters="using:Microsoft.Toolkit.Uwp.UI.Converters"
     xmlns:viewModels="using:Woop.ViewModels"
     xmlns:views="using:Woop.Views"
+    x:Name="Root"
     Padding="0"
     Background="{ThemeResource SystemControlAcrylicWindowBrush}"
     Loaded="Page_Loaded"
