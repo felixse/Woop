@@ -109,7 +109,7 @@
                                 <SymbolIcon Symbol="Setting" />
                             </MenuFlyoutItem.Icon>
                         </MenuFlyoutItem>
-                        <MenuFlyoutItem Text="About" />
+                        <MenuFlyoutItem Text="About"  Click="OnAboutClicked"/>
                         <MenuFlyoutSeparator />
                         <MenuFlyoutItem Text="Quit">
                             <MenuFlyoutItem.Icon>

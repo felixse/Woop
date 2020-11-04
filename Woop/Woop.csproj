@@ -137,6 +137,9 @@
     <Compile Include="Services\SettingsService.cs" />
     <Compile Include="ViewModels\SettingsViewModel.cs" />
     <Compile Include="ViewModels\StatusViewModel.cs" />
+    <Compile Include="Views\AboutDialog.xaml.cs">
+      <DependentUpon>AboutDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\ColorCodeThemes.cs" />
     <Compile Include="Views\LineNumbers.xaml.cs">
       <DependentUpon>LineNumbers.xaml</DependentUpon>
@@ -362,6 +365,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="Views\AboutDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\LineNumbers.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

@@ -151,5 +151,11 @@ namespace Woop.Views
             var settings = new SettingsDialog(_settingsService);
             await settings.ShowAsync();
         }
+
+        private async void OnAboutClicked(object sender, RoutedEventArgs e)
+        {
+            var about = new AboutDialog();
+            await about.ShowAsync();
+        }
     }
 }
