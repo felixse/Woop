@@ -8,14 +8,14 @@
 
   <Identity
     Name="c2c38534-f3cf-4679-a23f-1ae60274d54c"
-    Publisher="CN=fseid"
+    Publisher="CN=Felix Seidl, O=Felix Seidl, STREET=Kapellenstr. 4, L=Nürnberg, S=Bayern, PostalCode=90478, C=DE"
     Version="1.0.0.0" />
 
   <mp:PhoneIdentity PhoneProductId="c2c38534-f3cf-4679-a23f-1ae60274d54c" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 
   <Properties>
     <DisplayName>Woop</DisplayName>
-    <PublisherDisplayName>fseid</PublisherDisplayName>
+    <PublisherDisplayName>felixse</PublisherDisplayName>
     <Logo>Assets\StoreLogo.png</Logo>
   </Properties>
 
@@ -49,8 +49,4 @@
       </uap:VisualElements>
     </Application>
   </Applications>
-
-  <Capabilities>
-    <Capability Name="internetClient" />
-  </Capabilities>
 </Package>
