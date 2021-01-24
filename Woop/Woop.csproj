@@ -252,12 +252,6 @@
     <Content Include="Assets\light\watch.png" />
     <Content Include="Assets\light\website.png" />
     <Content Include="Assets\Require.js" />
-    <Content Include="Assets\Scripts\HTMLEncodeAll.js" />
-    <Content Include="Assets\Scripts\JSONtoYAML.js" />
-    <Content Include="Assets\Scripts\lib\js-yaml.js" />
-    <Content Include="Assets\Scripts\ReplaceSmartQuotes.js" />
-    <Content Include="Assets\Scripts\SpongeCase.js" />
-    <Content Include="Assets\Scripts\YAMLtoJSON.js" />
     <Content Include="Assets\SmallTile.scale-100.png" />
     <Content Include="Assets\SmallTile.scale-125.png" />
     <Content Include="Assets\SmallTile.scale-150.png" />
@@ -300,64 +294,6 @@
     <Content Include="Assets\Wide310x150Logo.scale-150.png" />
     <Content Include="Assets\Wide310x150Logo.scale-400.png" />
     <Content Include="Assets\WoopAdapter.js" />
-    <Content Include="Assets\Scripts\AddSlashes.js" />
-    <Content Include="Assets\Scripts\AndroidIOSStrings.js" />
-    <Content Include="Assets\Scripts\Base64Decode.js" />
-    <Content Include="Assets\Scripts\Base64Encode.js" />
-    <Content Include="Assets\Scripts\CamelCase.js" />
-    <Content Include="Assets\Scripts\Collapse.js" />
-    <Content Include="Assets\Scripts\CountCharacters.js" />
-    <Content Include="Assets\Scripts\CountLines.js" />
-    <Content Include="Assets\Scripts\CountWords.js" />
-    <Content Include="Assets\Scripts\CSVtoJSON.js" />
-    <Content Include="Assets\Scripts\DateToTimestamp.js" />
-    <Content Include="Assets\Scripts\DateToUTC.js" />
-    <Content Include="Assets\Scripts\Deburr.js" />
-    <Content Include="Assets\Scripts\Downcase.js" />
-    <Content Include="Assets\Scripts\EvalJavascript.js" />
-    <Content Include="Assets\Scripts\FormatCSS.js" />
-    <Content Include="Assets\Scripts\FormatJSON.js" />
-    <Content Include="Assets\Scripts\FormatSQL.js" />
-    <Content Include="Assets\Scripts\FormatXML.js" />
-    <Content Include="Assets\Scripts\hex2rgb.js" />
-    <Content Include="Assets\Scripts\HTMLDecode.js" />
-    <Content Include="Assets\Scripts\HTMLEncode.js" />
-    <Content Include="Assets\Scripts\IOSAndroidStrings.js" />
-    <Content Include="Assets\Scripts\JSONtoCSV.js" />
-    <Content Include="Assets\Scripts\JsonToQuery.js" />
-    <Content Include="Assets\Scripts\JWTDecode.js" />
-    <Content Include="Assets\Scripts\KebabCase.js" />
-    <Content Include="Assets\Scripts\lib\base64.js" />
-    <Content Include="Assets\Scripts\lib\hashes.js" />
-    <Content Include="Assets\Scripts\lib\he.js" />
-    <Content Include="Assets\Scripts\lib\lodash.boop.js" />
-    <Content Include="Assets\Scripts\lib\vkBeautify.js" />
-    <Content Include="Assets\Scripts\MarkdownQuote.js" />
-    <Content Include="Assets\Scripts\MD5.js" />
-    <Content Include="Assets\Scripts\MinifyCSS.js" />
-    <Content Include="Assets\Scripts\MinifyJSON.js" />
-    <Content Include="Assets\Scripts\MinifySQL.js" />
-    <Content Include="Assets\Scripts\MinifyXML.js" />
-    <Content Include="Assets\Scripts\NatSort.js" />
-    <Content Include="Assets\Scripts\PhpUnserialize.js" />
-    <Content Include="Assets\Scripts\QueryToJson.js" />
-    <Content Include="Assets\Scripts\RemoveDuplicates.js" />
-    <Content Include="Assets\Scripts\RemoveSlashes.js" />
-    <Content Include="Assets\Scripts\ReverseLines.js" />
-    <Content Include="Assets\Scripts\ReverseString.js" />
-    <Content Include="Assets\Scripts\Rot13.js" />
-    <Content Include="Assets\Scripts\SHA1.js" />
-    <Content Include="Assets\Scripts\SHA256.js" />
-    <Content Include="Assets\Scripts\SHA512.js" />
-    <Content Include="Assets\Scripts\ShuffleLines.js" />
-    <Content Include="Assets\Scripts\SnakeCase.js" />
-    <Content Include="Assets\Scripts\Sort.js" />
-    <Content Include="Assets\Scripts\StartCase.js" />
-    <Content Include="Assets\Scripts\SumAll.js" />
-    <Content Include="Assets\Scripts\Trim.js" />
-    <Content Include="Assets\Scripts\Upcase.js" />
-    <Content Include="Assets\Scripts\URLDecode.js" />
-    <Content Include="Assets\Scripts\URLEncode.js" />
     <Content Include="Properties\Default.rd.xml" />
     <Content Include="Assets\LockScreenLogo.scale-200.png" />
     <Content Include="Assets\SplashScreen.scale-200.png" />
@@ -365,6 +301,8 @@
     <Content Include="Assets\Square44x44Logo.scale-200.png" />
     <Content Include="Assets\Square44x44Logo.targetsize-24_altform-unplated.png" />
     <Content Include="Assets\Wide310x150Logo.scale-200.png" />
+    <Content Include="Assets\Scripts\*" />
+    <Content Include="Assets\Scripts\lib\*" />
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
@@ -422,6 +360,10 @@
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
+  </PropertyGroup>
+  <PropertyGroup>
+    <PreBuildEvent>del /q "$(SolutionDir)Woop\Assets\Scripts\"
+xcopy /y /e "$(SolutionDir)Scripts" "$(SolutionDir)Woop\Assets\Scripts\"</PreBuildEvent>
   </PropertyGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\WindowsXaml\v$(VisualStudioVersion)\Microsoft.Windows.UI.Xaml.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
