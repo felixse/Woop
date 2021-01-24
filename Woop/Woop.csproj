@@ -363,7 +363,7 @@
   </PropertyGroup>
   <PropertyGroup>
     <PreBuildEvent>del /q "$(SolutionDir)Woop\Assets\Scripts\"
-xcopy /y /e "$(SolutionDir)Scripts" "$(SolutionDir)Woop\Assets\Scripts\"</PreBuildEvent>
+xcopy /y /e "$(SolutionDir)submodules\Boop\Boop\Boop\scripts" "$(SolutionDir)Woop\Assets\Scripts\"</PreBuildEvent>
   </PropertyGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\WindowsXaml\v$(VisualStudioVersion)\Microsoft.Windows.UI.Xaml.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
