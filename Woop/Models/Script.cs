@@ -34,7 +34,7 @@ namespace Woop.Models
             {
                 var execution = new ScriptExecution(selection, fullText, insertPosition, postInfo, postError);
                 Context.Value.Script.main(execution);
-                return execution.text;
+                return execution.text ?? string.Empty;
             }
             catch (Exception e)
             {

@@ -196,11 +196,11 @@ namespace Woop.ViewModels
             var currentText = _buffer.GetText();
             var text = script.Script.Run(selection.Content, _buffer.GetText(), selection.Start, ShowInfo, ShowError);
 
-            if (_buffer.GetSelection()?.Length != 0)
+            if (selection.Length != 0 && !string.Equals(text, selection.Content))
             {
                 _buffer.SetSelection(text);
             }
-            else
+            else if (selection.Length == 0 && !string.Equals(text, currentText))
             {
                 _buffer.SetText(text);
             }
