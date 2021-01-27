@@ -7,15 +7,15 @@
   IgnorableNamespaces="uap mp">
 
   <Identity
-    Name="c2c38534-f3cf-4679-a23f-1ae60274d54c"
+    Name="53621FSApps.Wooop"
     Publisher="CN=Felix Seidl, O=Felix Seidl, STREET=Kapellenstr. 4, L=Nürnberg, S=Bayern, PostalCode=90478, C=DE"
-    Version="1.0.0.0" />
+    Version="1.0.1.0" />
 
-  <mp:PhoneIdentity PhoneProductId="c2c38534-f3cf-4679-a23f-1ae60274d54c" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
+  <mp:PhoneIdentity PhoneProductId="6872c067-87fe-4265-a0d5-99833d583455" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 
   <Properties>
-    <DisplayName>Woop</DisplayName>
-    <PublisherDisplayName>felixse</PublisherDisplayName>
+    <DisplayName>Wooop</DisplayName>
+    <PublisherDisplayName>FS Apps</PublisherDisplayName>
     <Logo>Assets\StoreLogo.png</Logo>
   </Properties>
 
@@ -32,7 +32,7 @@
       Executable="$targetnametoken$.exe"
       EntryPoint="Woop.App">
       <uap:VisualElements
-        DisplayName="Woop"
+        DisplayName="Wooop"
         Square150x150Logo="Assets\Square150x150Logo.png"
         Square44x44Logo="Assets\Square44x44Logo.png"
         Description="Woop"

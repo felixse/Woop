@@ -1,7 +1,7 @@
 ﻿function require(name) {
     const module = { exports: {} };
     ((module, exports) => {
-        eval(_loadLib(name))
+        eval(_loader.Load(name))
     })(module, module.exports);
     return module.exports;
 };

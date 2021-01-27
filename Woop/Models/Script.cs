@@ -1,4 +1,4 @@
-﻿using ChakraCore.NET;
+﻿using Microsoft.ClearScript.V8;
 using System;
 using System.Text.Json;
 using Woop.Services;
@@ -11,31 +11,30 @@ namespace Woop.Models
 
         public ScriptMetadata Metadata { get; }
 
-        public Lazy<ChakraContext> Context { get; }
+        public Lazy<V8ScriptEngine> Context { get; }
 
-        public Script(ChakraRuntime runtime, string scriptContent, string adapterScript, string requireScript, bool builtIn)
+        public Script(V8Runtime runtime, string scriptContent, string requireScript, bool builtIn)
         {
             var metaStart = scriptContent.IndexOf("/**");
             var metaEnd = scriptContent.IndexOf("**/");
             var metaContent = scriptContent.Substring(metaStart + 3, metaEnd - metaStart - 3);
             Metadata  = JsonSerializer.Deserialize<ScriptMetadata>(metaContent, new JsonSerializerOptions { AllowTrailingCommas = true, PropertyNameCaseInsensitive = true });
             IsBuiltIn = builtIn;
-            Context = new Lazy<ChakraContext>(() => {
-                var context = runtime.CreateContext(true);
+            Context = new Lazy<V8ScriptEngine>(() => {
+                var context = runtime.CreateScriptEngine();
                 RequireLoader.EnableRequire(context, requireScript);
-                context.RunScript(scriptContent);
-                context.RunScript(adapterScript);
+                context.Execute(scriptContent);
                 return context;
             });
         }
 
         public string Run(string selection, string fullText, int insertPosition, Action<string> postInfo, Action<string> postError)
         {
-            var input = new ScriptExecutionProperties(selection, fullText, insertPosition);
-            var methods = new ScriptExecutionMethods(postInfo, postError);
             try
             {
-                return Context.Value.GlobalObject.CallFunction<ScriptExecutionProperties, ScriptExecutionMethods, string>("woopAdapter", input, methods);
+                var execution = new ScriptExecution(selection, fullText, insertPosition, postInfo, postError);
+                Context.Value.Script.main(execution);
+                return execution.text;
             }
             catch (Exception e)
             {

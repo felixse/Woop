@@ -1,4 +1,5 @@
-﻿using ChakraCore.NET;
+﻿//using ChakraCore.NET;
+using Microsoft.ClearScript.V8;
 using System.Collections.Generic;
 using System.IO;
 
@@ -9,6 +10,7 @@ namespace Woop.Services
         private readonly Dictionary<string, string> _scriptCache = new Dictionary<string, string>();
 
         public string RootPath { get; set; } = string.Empty;
+
         public string LoadLib(string name)
         {
             if (!_scriptCache.ContainsKey(name))
@@ -18,15 +20,16 @@ namespace Woop.Services
             return _scriptCache[name];
         }
 
-        public static void EnableRequire(ChakraContext context, string requireScript, string rootPath = null)
+        public static void EnableRequire(V8ScriptEngine engine, string requireScript, string rootPath = null)
         {
             RequireLoader loader = new RequireLoader() { RootPath = rootPath };
-            context.GlobalObject.Binding.SetFunction<string, string>("_loadLib", loader.LoadLib);
-            context.RunScript(requireScript);
+            engine.AddHostObject("_loader", loader);
+            engine.Execute(requireScript);
         }
 
-        private string Load(string name)
+        public string Load(string name)
         {
+            name = name.Replace("@boop/", $"Assets/Scripts/lib/");
             var directoryInfo = new DirectoryInfo(Directory.GetCurrentDirectory() + "\\" + RootPath);
 
             var fileName = name + ".js";
