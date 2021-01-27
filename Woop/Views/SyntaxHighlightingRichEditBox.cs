@@ -98,6 +98,7 @@ namespace Woop.Views
         void IBuffer.SetText(string text)
         {
             Document.SetText(TextSetOptions.None, text);
+            Document.Selection.StartPosition = text.Length;
         }
 
         Selection IBuffer.GetSelection()
