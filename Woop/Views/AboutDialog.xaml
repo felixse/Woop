@@ -45,14 +45,15 @@
                 Height="100"
                 Source="ms-appx:///Assets/StoreLogo.scale-200.png" />
             <TextBlock Style="{StaticResource SubtitleTextBlockStyle}" Text="Woop" />
-            <TextBlock Margin="0,0,0,20" Text="A Windows port of Boop" />
+            <TextBlock Margin="0,0,0,0" Text="A Windows port of Boop" />
+            <StackPanel Margin="0,0,0,10" Orientation="Horizontal">
+                <TextBlock Style="{StaticResource CaptionTextBlockStyle}" Margin="0,0,4,0" Text="Version:" />
+                <TextBlock Style="{StaticResource CaptionTextBlockStyle}" Text="{x:Bind Version}" />
+            </StackPanel>
 
             <HyperlinkButton Content="GitHub" NavigateUri="https://github.com/felixse/woop" />
             <HyperlinkButton Click="LicensesClicked" Content="3rd party licenses" />
-            <StackPanel Margin="0,20,0,0" Orientation="Horizontal">
-                <TextBlock Margin="0,0,4,0" Text="Version:" />
-                <TextBlock Text="{x:Bind Version}" />
-            </StackPanel>
+            <HyperlinkButton Content="Script icons by icons8.com" NavigateUri="https://icons8.com" />
         </StackPanel>
     </StackPanel>
 </ContentDialog>
