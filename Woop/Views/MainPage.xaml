@@ -201,7 +201,7 @@
                             </ListBox.ItemContainerStyle>
                             <ListBox.ItemTemplate>
                                 <DataTemplate x:DataType="viewModels:ScriptViewModel">
-                                    <Grid>
+                                    <Grid DoubleTapped="OnScriptDoubleTapped">
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="auto" />
                                             <ColumnDefinition Width="*" />

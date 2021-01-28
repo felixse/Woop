@@ -157,5 +157,10 @@ namespace Woop.Views
             var about = new AboutDialog();
             await about.ShowAsync();
         }
+
+        private void OnScriptDoubleTapped(object sender, DoubleTappedRoutedEventArgs e)
+        {
+            ViewModel.RunSelectedScript();
+        }
     }
 }
