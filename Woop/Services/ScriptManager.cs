@@ -6,6 +6,7 @@ using Windows.Storage;
 using Woop.Models;
 using System.Linq;
 using Microsoft.ClearScript.V8;
+using Windows.Storage.AccessCache;
 
 namespace Woop.Services
 {
@@ -34,8 +35,14 @@ namespace Woop.Services
             var customScripts = Enumerable.Empty<Script>();
             if (!string.IsNullOrWhiteSpace(_settingsService.CustomScriptsFolderLocation))
             {
-                var folder = await StorageFolder.GetFolderFromPathAsync(_settingsService.CustomScriptsFolderLocation);
-                customScripts = await InitializeScripts(folder, requireScript, false);
+                try
+                {
+                    var folder = await StorageFolder.GetFolderFromPathAsync(_settingsService.CustomScriptsFolderLocation);
+                    customScripts = await InitializeScripts(folder, requireScript, false);
+                }
+                catch (Exception)
+                {
+                }
             }
 
             return builtInScripts.Concat(customScripts);

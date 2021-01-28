@@ -49,21 +49,9 @@ namespace Woop.ViewModels
             get => _settingsService.CustomScriptsFolderLocation;
             set
             {
-                var valid = Directory.Exists(value);
-                InvalidDirectory = !valid;
-                if (valid)
-                {
-                    _settingsService.CustomScriptsFolderLocation = value;
-                    OnPropertyChanged(nameof(CustomScriptsFolderLocation));
-                    UpdateFutureAccessList(value);
-                }
+                _settingsService.CustomScriptsFolderLocation = value;
+                OnPropertyChanged(nameof(CustomScriptsFolderLocation));
             }
-        }
-
-        public bool InvalidDirectory
-        {
-            get => _invalidDirectory;
-            set => SetProperty(ref _invalidDirectory, value);
         }
 
         public async Task Browse()
@@ -76,14 +64,9 @@ namespace Woop.ViewModels
 
             if (folder != null)
             {
+                StorageApplicationPermissions.FutureAccessList.AddOrReplace("CustomScriptsToken", folder);
                 CustomScriptsFolderLocation = folder.Path;
             }
-        }
-
-        private async Task UpdateFutureAccessList(string path)
-        {
-            var file = await StorageFile.GetFileFromPathAsync(CustomScriptsFolderLocation);
-            StorageApplicationPermissions.FutureAccessList.AddOrReplace("CustomScriptsToken", file);
         }
     }
 }

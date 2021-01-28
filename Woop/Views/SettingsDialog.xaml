@@ -58,19 +58,14 @@
             </controls:HeaderedContentControl>
 
             <controls:HeaderedContentControl Margin="0,0,0,12" Header="Custom scripts folder location">
-                <StackPanel>
-                    <StackPanel Orientation="Horizontal">
+                <StackPanel Orientation="Horizontal">
                         <TextBox
                             Width="200"
                             Margin="0,8,8,8"
+                            IsReadOnly="True"
                             Text="{x:Bind ViewModel.CustomScriptsFolderLocation, Mode=TwoWay}" />
                         <Button Command="{x:Bind ViewModel.BrowseCommand}" Content="Browse" />
                     </StackPanel>
-                    <TextBlock
-                        Foreground="{ThemeResource SystemErrorTextColor}"
-                        Text="Invalid directory"
-                        Visibility="{x:Bind ViewModel.InvalidDirectory, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}" />
-                </StackPanel>
             </controls:HeaderedContentControl>
 
             <HyperlinkButton Content="About custom scripts" NavigateUri="https://github.com/IvanMathy/Boop/blob/main/Boop/Documentation/CustomScripts.md#custom-scripts" />
