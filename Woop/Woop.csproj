@@ -160,8 +160,6 @@
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Models\Script.cs" />
-    <Compile Include="Models\ScriptExecutionMethods.cs" />
-    <Compile Include="Models\ScriptExecutionProperties.cs" />
     <Compile Include="Services\ScriptManager.cs" />
     <Compile Include="Models\ScriptMetadata.cs" />
     <Compile Include="ViewModels\ScriptViewModel.cs" />
