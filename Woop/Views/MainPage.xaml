@@ -9,11 +9,12 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:toolkitConverters="using:Microsoft.Toolkit.Uwp.UI.Converters"
+    xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     xmlns:viewModels="using:Woop.ViewModels"
     xmlns:views="using:Woop.Views"
     x:Name="Root"
     Padding="0"
-    Background="{ThemeResource SystemControlAcrylicWindowBrush}"
+    muxc:BackdropMaterial.ApplyToRootOrPageBackground="True"
     Loaded="Page_Loaded"
     Unloaded="Page_Unloaded"
     mc:Ignorable="d">
@@ -135,14 +136,15 @@
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
             <views:LineNumbers x:Name="LineNumbers" Grid.Column="0" />
-            <views:SyntaxHighlightingRichEditBox
+            <Border BorderThickness="1 1 0 0" Grid.Column="1" BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}" CornerRadius="8 0 0 0">
+                <views:SyntaxHighlightingRichEditBox
                 x:Name="Buffer"
-                Grid.Column="1"
-                Padding="0,6,6,6"
+                Padding="6,6,6,6"
                 BorderThickness="0"
-                CornerRadius="0"
                 FontFamily="Consolas"
                 SelectionHighlightColorWhenNotFocused="{ThemeResource SystemColorControlAccentBrush}" />
+            </Border>
+
         </Grid>
 
         <Border
@@ -165,8 +167,6 @@
                         <TextBox
                             x:Name="Query"
                             Background="Transparent"
-                            BorderThickness="0"
-                            CornerRadius="0"
                             FontSize="24"
                             KeyDown="Query_KeyDown"
                             PlaceholderText="Start typing..."
@@ -180,7 +180,7 @@
                                 <SolidColorBrush x:Key="TextControlBackgroundFocused" Color="Transparent" />
                             </TextBox.Resources>
                         </TextBox>
-                        <ListBox
+                        <ListView
                             x:Name="Scripts"
                             MaxHeight="300"
                             Background="Transparent"
@@ -189,17 +189,10 @@
                             SelectionChanged="ListBox_SelectionChanged"
                             SelectionMode="Single"
                             UseSystemFocusVisuals="False">
-                            <ListBox.Resources>
+                            <ListView.Resources>
                                 <SolidColorBrush x:Key="ListBoxItemSelectedBackgroundThemeBrush" Color="Blue" />
-                            </ListBox.Resources>
-                            <ListBox.ItemContainerStyle>
-                                <Style TargetType="ListBoxItem">
-                                    <Setter Property="CornerRadius" Value="5" />
-                                    <Setter Property="Background" Value="Transparent" />
-                                    <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-                                </Style>
-                            </ListBox.ItemContainerStyle>
-                            <ListBox.ItemTemplate>
+                            </ListView.Resources>
+                            <ListView.ItemTemplate>
                                 <DataTemplate x:DataType="viewModels:ScriptViewModel">
                                     <Grid DoubleTapped="OnScriptDoubleTapped">
                                         <Grid.ColumnDefinitions>
@@ -212,7 +205,7 @@
                                             Margin="0,0,5,0"
                                             Opacity="0.7"
                                             Source="{x:Bind Script.Metadata.Icon, Converter={StaticResource IconNameToIconConverter}}" />
-                                        <StackPanel Grid.Column="1">
+                                        <StackPanel Grid.Column="1" Margin="6">
                                             <TextBlock FontSize="24" Text="{x:Bind Script.Metadata.Name}" />
                                             <TextBlock
                                                 Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
@@ -223,8 +216,17 @@
                                     </Grid>
 
                                 </DataTemplate>
-                            </ListBox.ItemTemplate>
-                        </ListBox>
+                            </ListView.ItemTemplate>
+                            <ListView.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <StackPanel>
+                                        <StackPanel.ChildrenTransitions>
+                                            <TransitionCollection />
+                                        </StackPanel.ChildrenTransitions>
+                                    </StackPanel>
+                                </ItemsPanelTemplate>
+                            </ListView.ItemsPanel>
+                        </ListView>
                     </StackPanel>
                 </Border>
             </Popup>

@@ -1,5 +1,5 @@
 ﻿using ColorCode;
-using Microsoft.Toolkit.Uwp.UI.Extensions;
+using Microsoft.Toolkit.Uwp.UI;
 using Windows.System;
 using Windows.UI.Text;
 using Windows.UI.Xaml;

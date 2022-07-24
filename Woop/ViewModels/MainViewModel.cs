@@ -192,6 +192,8 @@ namespace Woop.ViewModels
 
         private void RunScript(ScriptViewModel script)
         {
+            if (script == null) return;
+
             var selection = _buffer.GetSelection();
             var currentText = _buffer.GetText();
             var text = script.Script.Run(selection.Content, _buffer.GetText(), selection.Start, ShowInfo, ShowError);

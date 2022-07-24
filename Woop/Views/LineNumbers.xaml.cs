@@ -1,4 +1,4 @@
-﻿using Microsoft.Toolkit.Uwp.UI.Extensions;
+﻿using Microsoft.Toolkit.Uwp.UI.Animations;
 using System;
 using System.Collections.Generic;
 using Windows.Foundation;
@@ -77,8 +77,14 @@ namespace Woop.Views
             Buffer.ScrollViewer.ViewChanged += OnContentScrollViewerViewChanged;
             Buffer.ScrollViewer.SizeChanged += OnContentScrollViewerSizeChanged;
 
-            _contentScrollViewerVerticalScrollBar = (ScrollBar)Buffer.ScrollViewer.FindDescendantByName("VerticalScrollBar");
-            _contentScrollViewerVerticalScrollBar.ValueChanged += OnVerticalScrollBarValueChanged;
+            var scrollViewerRoot = (FrameworkElement)VisualTreeHelper.GetChild(Buffer.ScrollViewer, 0);
+            _contentScrollViewerVerticalScrollBar = (ScrollBar)scrollViewerRoot.FindName("VerticalScrollBar");
+
+
+            if (_contentScrollViewerVerticalScrollBar != null)
+            {
+                _contentScrollViewerVerticalScrollBar.ValueChanged += OnVerticalScrollBarValueChanged;
+            }
 
             UpdateLineNumbersRendering();
         }
