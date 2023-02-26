@@ -130,7 +130,7 @@
                 Grid.Column="1"
                 Fill="Transparent" />
         </Grid>
-        <Grid Grid.Row="1" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="*" />
@@ -142,7 +142,12 @@
                 Padding="6,6,6,6"
                 BorderThickness="0"
                 FontFamily="Consolas"
-                SelectionHighlightColorWhenNotFocused="{ThemeResource SystemColorControlAccentBrush}" />
+                Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+                SelectionHighlightColorWhenNotFocused="{ThemeResource SystemColorControlAccentBrush}" >
+                    <views:SyntaxHighlightingRichEditBox.Resources>
+                        <SolidColorBrush x:Key="TextControlBackgroundPointerOver" Color="Transparent" />
+                    </views:SyntaxHighlightingRichEditBox.Resources>
+                </views:SyntaxHighlightingRichEditBox>
             </Border>
 
         </Grid>
@@ -160,6 +165,8 @@
                         Margin="20"
                         HorizontalAlignment="Stretch"
                         Background="{ThemeResource SystemControlAcrylicElementBrush}"
+                        BorderBrush="{ThemeResource SearchBoxDisabledBorderThemeBrush}"
+                        BorderThickness="1"
                         CornerRadius="4">
                         <StackPanel.Shadow>
                             <ThemeShadow />
@@ -170,6 +177,7 @@
                             FontSize="24"
                             KeyDown="Query_KeyDown"
                             PlaceholderText="Start typing..."
+                            BorderThickness="0"
                             Text="{x:Bind ViewModel.Query, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                             <Interactivity:Interaction.Behaviors>
                                 <Core:DataTriggerBehavior Binding="{x:Bind ViewModel.PickerOpened, Mode=OneWay}" Value="true">
@@ -178,6 +186,8 @@
                             </Interactivity:Interaction.Behaviors>
                             <TextBox.Resources>
                                 <SolidColorBrush x:Key="TextControlBackgroundFocused" Color="Transparent" />
+                                <SolidColorBrush x:Key="TextControlBackground" Color="Transparent" />
+                                <SolidColorBrush x:Key="TextControlBackgroundPointerOver" Color="Transparent" />
                             </TextBox.Resources>
                         </TextBox>
                         <ListView
@@ -189,9 +199,6 @@
                             SelectionChanged="ListBox_SelectionChanged"
                             SelectionMode="Single"
                             UseSystemFocusVisuals="False">
-                            <ListView.Resources>
-                                <SolidColorBrush x:Key="ListBoxItemSelectedBackgroundThemeBrush" Color="Blue" />
-                            </ListView.Resources>
                             <ListView.ItemTemplate>
                                 <DataTemplate x:DataType="viewModels:ScriptViewModel">
                                     <Grid DoubleTapped="OnScriptDoubleTapped">
