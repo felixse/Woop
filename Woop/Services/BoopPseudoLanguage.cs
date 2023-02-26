@@ -103,7 +103,7 @@ namespace Woop.Services
             );
 
             _jsonLabels = new LanguageRule(
-                "\"([^\"]+?)\"\\s*(?=:)",
+                @"""([^""]+?)""\s*(?=:)",
                 new Dictionary<int, string>
                 {
                     [0] = ScopeName.PseudoKeyword
@@ -119,7 +119,7 @@ namespace Woop.Services
             );
 
             _doubleQuotes = new LanguageRule(
-                @"""[^\n]*?""",
+                @"\""(?:[^\""\\]|\\.)*\""",
                 new Dictionary<int, string>
                 {
                     [0] = ScopeName.String
