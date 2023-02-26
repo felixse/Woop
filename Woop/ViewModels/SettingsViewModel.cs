@@ -2,10 +2,8 @@
 using Microsoft.Toolkit.Mvvm.Input;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using Windows.Storage;
 using Windows.Storage.AccessCache;
 using Windows.Storage.Pickers;
 using Windows.UI.Xaml;
@@ -16,7 +14,6 @@ namespace Woop.ViewModels
     public class SettingsViewModel : ObservableObject
     {
         private readonly SettingsService _settingsService;
-        private bool _invalidDirectory;
 
         public SettingsViewModel(SettingsService settingsService)
         {

@@ -32,7 +32,6 @@ namespace Woop.ViewModels
 
         private readonly ScriptManager _scriptManager;
         private readonly CoreDispatcher _dispatcher;
-        private readonly SettingsService _settingsService;
         private string _query;
         private bool _pickerOpened;
         private IEnumerable<ScriptViewModel> _scripts;
@@ -45,7 +44,6 @@ namespace Woop.ViewModels
         public MainViewModel(CoreDispatcher dispatcher, SettingsService settingsService)
         {
             _dispatcher = dispatcher;
-            _settingsService = settingsService;
             _scriptManager = new ScriptManager(settingsService);
 
             RunSelectedScriptCommand = new RelayCommand(RunSelectedScript);
@@ -230,7 +228,7 @@ namespace Woop.ViewModels
 
         public void ShowError(string error)
         {
-            _dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+            _ = _dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
             {
                 Status.Set(error, StatusViewModel.StatusType.Error, TimeSpan.FromSeconds(10));
             });
@@ -238,7 +236,7 @@ namespace Woop.ViewModels
 
         public void ShowInfo(string info)
         {
-            _dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+            _ = _dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
             {
                 Status.Set(info, StatusViewModel.StatusType.Info, TimeSpan.FromSeconds(10));
             });
