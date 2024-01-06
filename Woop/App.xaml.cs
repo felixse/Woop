@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.UI.Xaml;
@@ -30,6 +30,45 @@ namespace Woop
             if (_settingsService.ApplicationTheme != ElementTheme.Default)
             {
                 App.Current.RequestedTheme = _settingsService.ApplicationTheme == ElementTheme.Light ? ApplicationTheme.Light : ApplicationTheme.Dark;
+            }
+        }
+
+        protected override void OnActivated(IActivatedEventArgs args)
+        {
+            switch (args.Kind)
+            {
+                case ActivationKind.CommandLineLaunch:
+                    CommandLineActivatedEventArgs cmdLineArgs = args as CommandLineActivatedEventArgs;
+                    CommandLineActivationOperation operation = cmdLineArgs.Operation;
+                    string cmdLineString = operation.Arguments;
+                    string activationPath = operation.CurrentDirectoryPath;
+
+                    Frame rootFrame = Window.Current.Content as Frame;
+
+                    // Do not repeat app initialization when the Window already has content,
+                    // just ensure that the window is active
+                    if (rootFrame == null)
+                    {
+                        // Create a Frame to act as the navigation context and navigate to the first page
+                        rootFrame = new Frame();
+
+                        rootFrame.NavigationFailed += OnNavigationFailed;
+
+                        // Place the frame in the current Window
+                        Window.Current.Content = rootFrame;
+                    }
+
+                    if (rootFrame.Content == null)
+                    {
+                        // When the navigation stack isn't restored navigate to the first page,
+                        // configuring the new page by passing required information as a navigation
+                        // parameter
+                        rootFrame.Navigate(typeof(MainPage), cmdLineString);
+                    }
+                    // Ensure the current window is active
+                    Window.Current.Activate();
+
+                    break;
             }
         }
 
